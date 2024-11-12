@@ -33,7 +33,7 @@ function Header() {
 
 							<ul className="main_nav_list_right">
 								<li>
-									<Link to="/logins">Login</Link> {/* Update to Link */}
+									<Link to="/login">Login</Link> {/* Update to Link */}
 								</li>
 								<li>
 									<Link to="/signups" className="cta_btn"> {/* Update to Link */}
