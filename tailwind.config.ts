@@ -1,5 +1,3 @@
-
-
 import type { Config } from "tailwindcss";
 
 const config: Config = {
@@ -7,7 +5,7 @@ const config: Config = {
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/**/*.{js,jsx,ts,tsx}"
+    "./src/**/*.{js,jsx,ts,tsx}",
   ],
 
   theme: {
@@ -20,30 +18,37 @@ const config: Config = {
     },
     extend: {
       dropShadow: {
-        
         "3xl": "0 10px 30px rgba(0, 0, 0, 0.05)",
       },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         background: "hsl(var(--background))",
-        blue: "hsl(var(--background-blue))",
+        // blue: "hsl(var(--background-blue))",
         foreground: "hsl(var(--foreground))",
-       
+        ring: "hsl(var(--ring))",
+
         nav: {
           foreground: {
             DEFAULT: "hsl(var(--nav-foreground))",
             active: "hsl(var(--nav-foreground-active))",
           },
         },
+        blue: {
+          DEFAULT: "hsl(var(--background-blue))",
+          "200": "hsl(var(--background-blue-200))",
+        },
         light: {
           background: "hsl(var(--light-background))",
-          gray: "hsl(var(--light-gray))",
+          gray: {
+            DEFAULT: "hsl(var(--light-gray))",
+            "600": "hsl(var(--light-gray-600))",
+          },
         },
         primary: {
           DEFAULT: "hsl(var(--primary))",
+          "150": "hsl(var(--primary-150))",
           foreground: "hsl(var(--primary-foreground))",
-          
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
@@ -58,10 +63,10 @@ const config: Config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        destructive:{
+        destructive: {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
-        }
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -77,5 +82,3 @@ const config: Config = {
   plugins: [],
 };
 export default config;
-
-

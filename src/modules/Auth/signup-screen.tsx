@@ -6,7 +6,7 @@ import { Toaster } from "@/ui/Toaster";
 import { SignUpForm } from "./features/components/signup-form";
 export function SignUpScreen(){
     
-    return (<>
+    return (
       <div className="flex columns-2 h-full w-full">
       <div className="bg-blue min-h-screen w-2/3">
         <img src={logo} alt="Visibuy logo"  className="w-80 mt-36 ml-28 "/>
@@ -20,5 +20,5 @@ export function SignUpScreen(){
          <Toaster />
       </div>
       </div>
-    </>)
+    )
 }

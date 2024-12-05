@@ -11,12 +11,13 @@ import {
   FormMessage,
 } from "@/ui/Form";
 import { useToast } from "@/ui/use-toast";
-import { Input } from "@/ui/Input";
+import Input from "@/ui/Input";
 import { Button } from "@/ui/Button";
 import { Loader2, MoveRight } from "lucide-react";
 import { Checkbox } from "@/ui/Checkbox";
 import { useLogin } from "../../mutations/use-login";
 import { Link } from "react-router-dom";
+import Icon from "@/ui/Icon";
 
 export function PasswordResetForm() {
   const { toast,toasts } = useToast();
@@ -69,7 +70,7 @@ export function PasswordResetForm() {
                     <Input
                       placeholder="Email"
                       {...field}
-                      className="p-6 my-8 text-base"
+                      icon={<Icon name="mail" className="h-8 w-8" />}
                     />
                   </FormControl>
                   <FormMessage />
