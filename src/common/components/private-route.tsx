@@ -1,12 +1,16 @@
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from '@/modules/Auth/hooks/use-auth';
 
-export const PrivateRoute = () => {
+export const PrivateRoute = ({children}:Readonly<{children:React.ReactNode}>) => {
   const { isAuthenticated, isLoading } = useAuth();
+   
+  const location = useLocation();
 
-  if (isLoading) {
-    return <div>Loading...</div>;
+  if (!isAuthenticated) {
+    // Save the attempted route
+    localStorage.setItem('redirectPath', location.pathname + location.search);
+    return <Navigate to="/login" />;
   }
 
-  return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />;
+  return children;
 };

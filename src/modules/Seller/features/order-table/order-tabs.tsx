@@ -1,11 +1,12 @@
-import { SellerOrder } from "@/modules/Orders/models/types";
-import { OrderStatus } from "@/types/status";
+
+import { TOrderStatus } from "@/types/status";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui/Tabs";
 import { Table } from "@tanstack/react-table";
 import { useCallback } from "react";
+import { ISellerOrder } from "../../models/orders";
 
 export interface ITabs {
-  value: OrderStatus | "all_orders";
+  value: TOrderStatus | "all_orders";
   title: string;
 }
 export function OrderTabs({
@@ -13,7 +14,7 @@ export function OrderTabs({
   table,
 }: {
   tabs: ITabs[];
-  table: Table<SellerOrder>;
+  table: Table<ISellerOrder>;
 }) {
   const handleResetFilters = useCallback(() => {
     return table.resetColumnFilters();

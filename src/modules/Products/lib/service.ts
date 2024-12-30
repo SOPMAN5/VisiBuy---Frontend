@@ -1,28 +1,5 @@
-import AuthApi from '@/modules/Auth/lib/api'
-import { SignupCredentials  , LoginCredentials, Role,} from '@/modules/Auth/models/types';
+import ProductApi from "./api";
 
-async function login(credentials: LoginCredentials) {
-   if(credentials.role === 'buyer') {
-
-     return await AuthApi.loginAsBuyer(credentials);
-   }
-
-   return await AuthApi.loginAsSeller(credentials);
-
-  }
-  async function registerBuyer(payload:SignupCredentials) {
-    
-    return await AuthApi.registerBuyer(payload);
- 
-   }
-   async function registerSeller(payload:SignupCredentials) {
-    
+export const getProductList = async ()=>{
    
-    return await AuthApi.registerSeller(payload)
- 
-   }  
-async function logout() {
-    await AuthApi.logout();
-  }
-
-export default {login,logout,registerSeller,registerBuyer}
+}

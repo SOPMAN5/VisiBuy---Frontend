@@ -1,16 +1,17 @@
+import { BaseQueryParams } from "@/models/base-query-params";
 import {
   VALIDATION_INVALID_FIELD,
-  VALIDATION_MIN_LENGTH,
   VALIDATION_REQUIRED,
 } from "@/lib/systemConfig";
 import { ZodType, z } from "zod";
 
-export interface ProductSate {
-  products: IProduct[];
-  selectedProduct: IProduct | null;
+export interface SellerProductSate {
+  products: ISellerProduct[];
+  selectedProduct: ISellerProduct | null;
 }
 
 export interface ProductDto {
+  id: string;
   color: string;
   brand: string;
   model: string;
@@ -20,8 +21,8 @@ export interface ProductDto {
   stock_status: "Out of stock" | "In stock";
   images: z.infer<typeof ImageMetadataSchema>[];
 }
-export type ImageUploadSchema = z.infer<typeof ImageMetadataSchema>
-export interface IProduct extends ProductDto {
+export type ImageUploadSchema = z.infer<typeof ImageMetadataSchema>;
+export interface ISellerProduct extends ProductDto {
   store_name: string;
   seller_img: string;
 }
@@ -58,7 +59,7 @@ export const ImageMetadataSchema = z.object({
     })
     .optional(),
 });
-export const AddProductSchema: ZodType<ProductDto> = z.object({
+export const AddProductSchema: ZodType<Omit<ProductDto, "id">> = z.object({
   color: z.string({
     required_error: VALIDATION_REQUIRED.replace("{{FIELD}}", "Color"),
   }),
@@ -90,3 +91,11 @@ export const AddProductSchema: ZodType<ProductDto> = z.object({
       { message: "Duplicate images are not allowed" }
     ),
 });
+
+export type TStockStatus = "Out of stock" | "In stock";
+export interface ISellerProductQueryParams extends BaseQueryParams {
+  brand?: string;
+  color?: string;
+  price_range?: string;
+  stock_status?: TStockStatus;
+}

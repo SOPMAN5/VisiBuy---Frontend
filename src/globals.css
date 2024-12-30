@@ -4,7 +4,7 @@
 
 @layer layer {
   :root {
-    --background: 0, 0%, 100%, 1
+    --background: 0, 0%, 100%, 1;
     --foreground: 0, 0%, 0%, 1;
     
     /* hsla(0, 0%, 63%, 1) */

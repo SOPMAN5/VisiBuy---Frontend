@@ -1,5 +1,5 @@
 type UserProfileCardProps = {
-  fullName: string;
+  fullName?: string;
   imgSrc?: string;
 };
 export function UserProfileCard({ fullName, imgSrc }: UserProfileCardProps) {

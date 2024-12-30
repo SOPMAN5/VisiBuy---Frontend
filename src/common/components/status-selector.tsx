@@ -1,5 +1,5 @@
 import { capitalize, cn } from "@/lib/utils";
-import { OrderStatus } from "@/types/status";
+import { TOrderStatus } from "@/types/status";
 import * as SelectPrimitive from "@radix-ui/react-select";
 import Icon from "@/ui/Icon";
 import {
@@ -29,9 +29,9 @@ const navVariants = cva(
   }
 );
 
-export function OrderSelectStatus({ status }: { status: OrderStatus }) {
+export function OrderSelectStatus({ status }: { status: TOrderStatus }) {
   const [orderstatus, setOrderStatus] = useState(status);
-  const handleSetOrderStatus = useCallback((status: OrderStatus) => {
+  const handleSetOrderStatus = useCallback((status: TOrderStatus) => {
     setOrderStatus(status);
   }, []);
   return (

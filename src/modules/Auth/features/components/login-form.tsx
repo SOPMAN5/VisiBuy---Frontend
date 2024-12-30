@@ -11,7 +11,7 @@ import {
   FormMessage,
 } from "@/ui/Form";
 import { useToast } from "@/ui/use-toast";
-import  Input  from "@/ui/Input";
+import Input from "@/ui/Input";
 import { Button } from "@/ui/Button";
 import { Loader2, MoveRight } from "lucide-react";
 import { Checkbox } from "@/ui/Checkbox";
@@ -20,31 +20,29 @@ import { Link } from "react-router-dom";
 import Icon from "@/ui/Icon";
 
 export function LoginForm() {
-  const { toast,toasts } = useToast();
+  const { toast, toasts } = useToast();
   const loginMutation = useLogin();
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
-      password: "",
+      pass: "",
       email: "",
       role: "seller",
       isRemeberChecked: false,
     },
   });
-   const onSubmit = async (values: z.infer<typeof LoginSchema>) => {
+  const onSubmit = async (values: z.infer<typeof LoginSchema>) => {
     try {
-        await loginMutation.mutateAsync(values);
-    } catch (error:any) {
-        console.log( error?.response.data.msg)
-        toast({
-            variant: "destructive",
-            title: "Uh oh! Something went wrong.",
-            description: error?.response.data.msg  ,
-            //duration:5000
-          })
-          
+      await loginMutation.mutateAsync(values);
+    } catch (error: any) {
+      console.log(error?.response.data.msg);
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: error?.response.data.msg,
+        duration:5000
+      });
     }
-   
   };
   return (
     <div className="w-[50%]">
@@ -63,7 +61,8 @@ export function LoginForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="flex justify-start text-xl">
-                    Email/Phone Number<span className="text-destructive ml-1">*</span>
+                    Email/Phone Number
+                    <span className="text-destructive ml-1">*</span>
                   </FormLabel>
                   <FormControl>
                     <Input
@@ -79,10 +78,12 @@ export function LoginForm() {
             />
             <FormField
               control={form.control}
-              name="password"
+              name="pass"
               render={({ field }) => (
                 <FormItem className="py-4">
-                  <FormLabel className="flex justify-start text-xl items-center">Password<span className="text-destructive ml-1">*</span></FormLabel>
+                  <FormLabel className="flex justify-start text-xl items-center">
+                    Password<span className="text-destructive ml-1">*</span>
+                  </FormLabel>
                   <FormControl>
                     <Input
                       placeholder="Password"
@@ -90,7 +91,6 @@ export function LoginForm() {
                       className=" text-base"
                       icon={<Icon name="eye" className="h-8 w-8" />}
                       type="password"
-                    
                     />
                   </FormControl>
                   <FormMessage />
@@ -108,10 +108,13 @@ export function LoginForm() {
                         checked={field.value}
                         onCheckedChange={field.onChange}
                         id="loginRemember"
-                      /><FormLabel htmlFor="loginRemember" className="flex justify-start text-xl">
-                       Remember me
-                    </FormLabel>
-                      
+                      />
+                      <FormLabel
+                        htmlFor="loginRemember"
+                        className="flex justify-start text-xl"
+                      >
+                        Remember me
+                      </FormLabel>
                     </div>
                   </FormControl>
                   <FormMessage />
@@ -131,10 +134,20 @@ export function LoginForm() {
                 )}
               </Button>
             </div>
-            <div className="flex justify-center items-center text-xl text-secondary-foreground  font-OpenSans mt-4"><h3>Don't have an account?</h3><Button asChild  variant="link" className="px-2 text-blue"><Link to="/signup"  className="text-xl ">Sign Up</Link></Button></div>
-            <Button asChild variant="link" className="h-2 text-blue"><Link to="/reset-password"  className="text-xl   font-OpenSans">Forgot Password</Link></Button>
+            <div className="flex justify-center items-center text-xl text-secondary-foreground  font-OpenSans mt-4">
+              <h3>Don't have an account?</h3>
+              <Button asChild variant="link" className="px-2 text-blue">
+                <Link to="/signup" className="text-xl ">
+                  Sign Up
+                </Link>
+              </Button>
+            </div>
+            <Button asChild variant="link" className="h-2 text-blue">
+              <Link to="/reset-password" className="text-xl   font-OpenSans">
+                Forgot Password
+              </Link>
+            </Button>
           </form>
-          
         </Form>
       </div>
     </div>

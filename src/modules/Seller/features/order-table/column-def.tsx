@@ -1,11 +1,11 @@
 import { OrderSelectStatus } from "@/common/components/status-selector";
 import { currencyFormmater, formatDate } from "@/lib/utils";
-import { SellerOrder } from "@/modules/Orders/models/types";
 import Icon from "@/ui/Icon";
 import { ColumnDef, Row } from "@tanstack/react-table";
 import { Link } from "react-router-dom";
+import { ISellerOrder } from "../../models/orders";
 
-export const columns: ColumnDef<SellerOrder>[] = [
+export const columns: ColumnDef<ISellerOrder>[] = [
   {
     accessorKey: "img_url",
     header: "Image",

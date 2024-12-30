@@ -6,7 +6,7 @@ import Header from "./Header";
 function AppLayout() {
 	return (
 		<>
-			<main className="container">
+			<main className="container" style={{paddingLeft:'0',maxWidth:'1600px'}}>
 				<Header />
 			</main>
 				<div>
