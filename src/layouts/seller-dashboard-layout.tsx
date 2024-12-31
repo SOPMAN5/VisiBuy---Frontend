@@ -1,6 +1,6 @@
 import { SideBar } from "@/common/components/side-bar";
 import { Header } from "./header";
-import { Link, Outlet, useSearchParams } from "react-router-dom";
+import { Link, Outlet, useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/ui/Button";
 import { Plus } from "lucide-react";
 import { NavItem } from "@/modules/Seller/components/navbar-item";
@@ -8,8 +8,13 @@ import { NavItemProps } from "@/types/navItem";
 import { UserProfileCard } from "@/common/components/user-profile-card";
 import { Notification } from "@/common/components/notification";
 import { SearchBar } from "@/common/components/search-bar";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { createQueryString } from "@/lib/utils";
+import { useGetMeQuery } from "@/modules/Auth/queries/queries";
+import { useAppDispatch, useAppSelector } from "@/hooks/app-hooks";
+import { RootState } from "@/store/store";
+import { Role } from "@/modules/Auth/models/types";
+import { initialAuthState, logout, setCredentials } from "@/modules/Auth/features/slices";
 const navlinks: NavItemProps[] = [
   { name: "Products", href: "products", iconName: "briefcase" },
   {
@@ -20,7 +25,21 @@ const navlinks: NavItemProps[] = [
   { name: "Customers", href: "customers", iconName: "user-round" },
 ];
 export function SellerDashboardLayout() {
+  const auth = useAppSelector((state: RootState) => state.auth);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate()
+  const { isLoading, isError, data } = useGetMeQuery(auth.role as Role);
   const [searchParams, setSearchParams] = useSearchParams();
+
+  useEffect(() => {
+    console.log(data);
+    dispatch(
+      setCredentials({
+        user: data,
+      })
+    );
+  }, [data]);
+
   const handleAddProduct = useCallback(
     function () {
       const queryStrings = createQueryString(
@@ -32,6 +51,10 @@ export function SellerDashboardLayout() {
     },
     [searchParams]
   );
+  const handleLogout = ()=>{
+    dispatch(logout())
+    navigate('/login')
+  }
   return (
     <section className="flex min-h-screen relative">
       <div className=" w-[20%] ">
@@ -68,6 +91,7 @@ export function SellerDashboardLayout() {
               </Link>
               <Link
                 to=""
+                onClick={handleLogout}
                 className="text-blue flex items-center text-3xl font-OpenSans font-semibold gap-7"
               >
                 <img src="/Logout.svg" width={25} alt="logout" />{" "}
@@ -83,7 +107,7 @@ export function SellerDashboardLayout() {
             <SearchBar />
             <div className="flex gap-4">
               <Notification />
-              <UserProfileCard fullName="Joel Pillar" />
+              <UserProfileCard fullName={data?.fullName} />
             </div>
           </div>
         </Header>

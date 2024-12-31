@@ -1,6 +1,6 @@
-import { OrderStatus } from "@/types/status";
+import { TOrderStatus } from "@/types/status";
 
-export interface Order {
+export interface IOrder {
   id: string;
   invoiceId: string;
   productName: string;
@@ -8,7 +8,6 @@ export interface Order {
   img_url: string;
   orderNumber: number;
   orderDate: string | Date;
-  status: OrderStatus;
+  status: TOrderStatus;
 }
 
-export interface SellerOrder extends Order {}

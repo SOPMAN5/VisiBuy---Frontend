@@ -9,7 +9,6 @@ interface AuthRepository {
     getCurrentUser(token:string,role:Role):Promise<User>;
     logout():Promise<void>;
     
-
   }
   
   export default AuthRepository;

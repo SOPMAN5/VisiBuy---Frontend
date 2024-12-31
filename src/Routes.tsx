@@ -14,8 +14,9 @@ import { PassowordRestPage } from "./pages/PasswordResetPage";
 import { SellerDashboardLayout } from "./layouts/seller-dashboard-layout";
 import { SellerProductPage } from "./pages/Seller/Product";
 import { FeedbackPage } from "./pages/Seller/Feedback";
-import {  SellerOrderPage } from "./pages/Seller/Order";
-import {  SellerOrderDetailsPage } from "./pages/Seller/OrderDetails";
+import { SellerOrderPage } from "./pages/Seller/Order";
+import { SellerOrderDetailsPage } from "./pages/Seller/OrderDetails";
+import { PrivateRoute } from "./common/components/private-route";
 const router = createHashRouter([
   {
     element: <AppLayout />,
@@ -61,7 +62,12 @@ const router = createHashRouter([
   { path: "/reset-password", element: <PassowordRestPage /> },
   {
     path: "/dashboard/seller",
-    element: <SellerDashboardLayout />,
+
+    element: (
+      <PrivateRoute>
+        <SellerDashboardLayout />
+      </PrivateRoute>
+    ),
     children: [
       { path: "products", element: <SellerProductPage /> },
       { path: "order-details", element: <div>test</div> },
@@ -69,7 +75,9 @@ const router = createHashRouter([
       {
         path: "orders",
         element: <SellerOrderPage />,
-        children: [{ path: "view/:orderId", element: <SellerOrderDetailsPage /> }],
+        children: [
+          { path: "view/:orderId", element: <SellerOrderDetailsPage /> },
+        ],
       },
     ],
   },

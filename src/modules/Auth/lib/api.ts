@@ -7,7 +7,7 @@ import {
   RegisterResponse,
   SignupCredentials,
 } from "@/modules/Auth/models/types";
-import { apiClient } from "@/lib/client";
+import { apiClient, axiosWithAuth } from "@/lib/client";
 class AuthApiAdapter implements AuthRepository {
   async  registerBuyer(payload:SignupCredentials): Promise<RegisterResponse> {
     const response = await apiClient.post<RegisterResponse>(
@@ -38,14 +38,14 @@ class AuthApiAdapter implements AuthRepository {
     );
     return response.data;
   }
-  async getUser(token:string, role:Role): Promise<User> {
-    const response = await apiClient.post(
+  async getUser( role:Role): Promise<User> {
+    const response = await axiosWithAuth.get(
         `/user/${role}`,
       );
       return response.data;  
   }
-  async getCurrentUser(token:string, role:Role): Promise<User> {
-    const response = await this.getUser(token,role)
+  async getCurrentUser(role:Role): Promise<User> {
+    const response = await this.getUser(role)
     return response;  
   }
   async logout(): Promise<void> {

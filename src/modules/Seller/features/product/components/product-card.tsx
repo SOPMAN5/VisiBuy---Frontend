@@ -1,4 +1,4 @@
-import { IProduct } from "../../../models/product";
+import { ISellerProduct } from "../../../models/product";
 
 export function SellerProductCard({
   seller_img,
@@ -10,8 +10,8 @@ export function SellerProductCard({
   description,
   store_name,
   images,
-}: IProduct) {
-  const bgImg = images.length > 0 ? images[0] : "/sneaker.png";
+}: ISellerProduct) {
+  const bgImg =  images[0] ?? "/sneaker.png";
   return (
     <div
       className=" rounded-md px-6  pb-4 bg-no-repeat min-h-[300px] bg-cover flex flex-col justify-end   text-white font-OpenSans"

@@ -6,19 +6,15 @@ import {
   getFilteredRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { SellerOrder } from "../Orders/models/types";
+import { ISellerOrder } from "./models/orders";
 import { columns } from "./features/order-table/column-def";
 import { ITabs, OrderTabs } from "./features/order-table/order-tabs";
-import {
-  Link,
-  Outlet,
-  useLocation,
-  useMatch,
-  useParams,
-} from "react-router-dom";
+import { Link, Outlet, useMatch, useParams } from "react-router-dom";
 import { dashboardConfig } from "@/lib/config";
 import Icon from "@/ui/Icon";
-const orders: SellerOrder[] = [
+import { useGetSellerOrderQuery } from "./queries/order/queries";
+import { Pagination } from "@/common/components/pagination";
+const orders: ISellerOrder[] = [
   {
     id: "1",
     invoiceId: "fsdsd",
@@ -41,6 +37,8 @@ const tabs: ITabs[] = [
 export function SellerOrderScreen() {
   const { orderId } = useParams();
   const match = useMatch(dashboardConfig.getFullPath("seller", "orders"));
+  const isMathRoute = match ? true : false;
+  //const sellerOrders  = useGetSellerOrderQuery(,isMathRoute)
   const table = useReactTable({
     initialState: {
       columnVisibility: {
@@ -62,7 +60,8 @@ export function SellerOrderScreen() {
   return (
     <>
       {match ? (
-        <MainLayout title="Order Management">
+        <div>
+          <MainLayout title="Order Management">
           <div className="grid grid-cols-5 gap-x-4">
             <OrderSummaryCard figure={620} />
             <OrderSummaryCard
@@ -89,13 +88,28 @@ export function SellerOrderScreen() {
           <OrderTabs tabs={tabs} table={table} />
           <SellerOrderTable table={table} />
         </MainLayout>
+        <Pagination setFirstPage={function (value: number): void {
+            throw new Error("Function not implemented.");
+          } } setLastPage={function (value: number): void {
+            throw new Error("Function not implemented.");
+          } } handlePrevPage={function (page: number): void {
+            throw new Error("Function not implemented.");
+          } } handleNextPage={function (page: number): void {
+            throw new Error("Function not implemented.");
+          } } handleSelectedPage={function (pageNum: number): void {
+            throw new Error("Function not implemented.");
+          } } totalPages={0} setQueryParameter={function (value: any): void {
+            throw new Error("Function not implemented.");
+          } } />
+        </div>
+        
       ) : (
         <MainLayout
           title={
             <div className="flex gap-x-4 items-center">
-              <Link to='' className="bg-light-gray px-4 py-2 ">
+              <Link to="" className="bg-light-gray px-4 py-2 ">
                 {" "}
-                <Icon name="move-left"  width={20} />
+                <Icon name="move-left" width={20} />
               </Link>
 
               {`Order details (#${orderId})`}

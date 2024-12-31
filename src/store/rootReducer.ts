@@ -7,6 +7,6 @@ const rootReducer = combineReducers({
   auth: authReducer,
   toast: toastReducer,
   seller: sellerReducer,
-  buyer: buyerReducer,
+ // buyer: buyerReducer,
 });
 export default rootReducer;

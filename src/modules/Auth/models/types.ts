@@ -10,7 +10,7 @@ import { z, ZodType } from "zod";
 
 export interface LoginCredentials {
   email: string;
-  password: string;
+  pass: string;
   role: Role;
   isRemeberChecked?: boolean;
 }
@@ -27,13 +27,15 @@ export interface AuthState {
   isAuthenticated: boolean;
   isLoading: boolean;
   error: string | null;
+  role:Role| null
 }
 export interface LoginResponse {
   msg: string;
   token: string;
+  role : Role
 }
 export interface LoginErrorResponse extends ErrorResponse {}
-export type Role = "buyer" | "seller";
+export type Role = "buyer" | "seller" | "admin";
 
 export type RegisterResponse = {
   userId: string;
@@ -62,7 +64,7 @@ export const LoginSchema: ZodType<LoginCredentials> = z.object({
     .max(100, {
       message: VALIDATION_MAX_LENGTH.replace("{{FIELD}}", "Email"),
     }),
-  password: z
+  pass: z
     .string({
       required_error: VALIDATION_REQUIRED.replace("{{FIELD}}", "Password"),
     })

@@ -10,7 +10,7 @@ export function AddProductModal() {
   const navigate = useNavigate();
   const [isSuccess, setIsSuccess] = useState(false);
   const isOpen = searchParams.get("modal") === "add-product";
-  console.log(isOpen);
+ 
   function handleModalOpen(open: boolean) {
     navigate(sellerProductRoute);
   }
