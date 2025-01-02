@@ -1,4 +1,4 @@
-import { OrderSelectStatus } from "@/common/components/status-selector";
+import OrderSelectStatus  from "@/common/components/status-selector";
 import { currencyFormmater, formatDate } from "@/lib/utils";
 import Icon from "@/ui/Icon";
 import { ColumnDef, Row } from "@tanstack/react-table";
@@ -66,8 +66,8 @@ export const columns: ColumnDef<ISellerOrder>[] = [
     cell: ({ row }) => {
       return (
         <div className="flex items-center justify-center">
-          <OrderSelectStatus status={row.getValue("status")} />
-          <Link to={`view/${row.getValue("orderNumber")}`}>
+          <OrderSelectStatus status={row.getValue("status")} id={row.getValue("id")} />
+          <Link to={`view/${row.getValue("id")}`}>
             <Icon
               name="ellipsis-vertical"
               className="text-secondary-foreground ml-4"

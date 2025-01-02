@@ -11,7 +11,8 @@ import {
 } from "@/ui/Select";
 import { SelectTrigger } from "@radix-ui/react-select";
 import { cva } from "class-variance-authority";
-import { useCallback, useState } from "react";
+import React, { useCallback, useState } from "react";
+import { useUpdateSellerOrderStatus } from "@/modules/Seller/mutations/order/useUpdateOrderStatus";
 
 const navVariants = cva(
   "text-lg w-[100px] h-10 focus:border-none outline-none bg-opacity-15",
@@ -29,10 +30,13 @@ const navVariants = cva(
   }
 );
 
-export function OrderSelectStatus({ status }: { status: TOrderStatus }) {
+ function OrderSelectStatus({ status,id }: Readonly<{ status: TOrderStatus;id:string }>) {
+  const updateSellerOrderStatusMutation = useUpdateSellerOrderStatus()
   const [orderstatus, setOrderStatus] = useState(status);
   const handleSetOrderStatus = useCallback((status: TOrderStatus) => {
     setOrderStatus(status);
+     updateSellerOrderStatusMutation.mutateAsync({id,status})
+     
   }, []);
   return (
     <Select onValueChange={handleSetOrderStatus}>
@@ -59,3 +63,4 @@ export function OrderSelectStatus({ status }: { status: TOrderStatus }) {
     </Select>
   );
 }
+export default React.memo(OrderSelectStatus)
