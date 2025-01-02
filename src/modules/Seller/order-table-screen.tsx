@@ -6,14 +6,17 @@ import {
   getFilteredRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ISellerOrder } from "./models/orders";
+import { ISellerOrder, ISellerOrderQueryParams } from "./models/orders";
 import { columns } from "./features/order-table/column-def";
 import { ITabs, OrderTabs } from "./features/order-table/order-tabs";
 import { Link, Outlet, useMatch, useParams } from "react-router-dom";
 import { dashboardConfig } from "@/lib/config";
 import Icon from "@/ui/Icon";
-import { useGetSellerOrderQuery } from "./queries/order/queries";
+import { useGetSellerOrdersQuery } from "./queries/order/queries";
 import { Pagination } from "@/common/components/pagination";
+import { useMemo, useState } from "react";
+import { SellerOrderQueryBuilder } from "./lib/orders/order-query-builder";
+import { OverlaySpinner } from "@/common/components/modal-spinner";
 const orders: ISellerOrder[] = [
   {
     id: "1",
@@ -36,9 +39,14 @@ const tabs: ITabs[] = [
 ];
 export function SellerOrderScreen() {
   const { orderId } = useParams();
+  const [queryParams, setQueryParams] = useState<ISellerOrderQueryParams>({
+    page: 1,
+    pageSize: 10,
+    status: "all_orders",
+  });
   const match = useMatch(dashboardConfig.getFullPath("seller", "orders"));
   const isMathRoute = match ? true : false;
-  //const sellerOrders  = useGetSellerOrderQuery(,isMathRoute)
+  const { data, isFetching } = useGetSellerOrdersQuery(queryParams, isMathRoute);
   const table = useReactTable({
     initialState: {
       columnVisibility: {
@@ -52,7 +60,7 @@ export function SellerOrderScreen() {
       ],
     },
 
-    data: orders,
+    data: data?.data.orders || [],
     columns,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
@@ -62,47 +70,43 @@ export function SellerOrderScreen() {
       {match ? (
         <div>
           <MainLayout title="Order Management">
-          <div className="grid grid-cols-5 gap-x-4">
-            <OrderSummaryCard figure={620} />
-            <OrderSummaryCard
-              title="Pending"
-              legendColor="bg-blue"
-              figure={601}
-            />
-            <OrderSummaryCard
-              title="Accepted"
-              figure={600}
-              legendColor="bg-[#FFA600]"
-            />
-            <OrderSummaryCard
-              title="Dispatched"
-              figure={489}
-              legendColor="bg-[#FF6200]"
-            />
-            <OrderSummaryCard
-              title="Delivered"
-              legendColor="bg-primary"
-              figure={312}
-            />
-          </div>
-          <OrderTabs tabs={tabs} table={table} />
-          <SellerOrderTable table={table} />
-        </MainLayout>
-        <Pagination setFirstPage={function (value: number): void {
-            throw new Error("Function not implemented.");
-          } } setLastPage={function (value: number): void {
-            throw new Error("Function not implemented.");
-          } } handlePrevPage={function (page: number): void {
-            throw new Error("Function not implemented.");
-          } } handleNextPage={function (page: number): void {
-            throw new Error("Function not implemented.");
-          } } handleSelectedPage={function (pageNum: number): void {
-            throw new Error("Function not implemented.");
-          } } totalPages={0} setQueryParameter={function (value: any): void {
-            throw new Error("Function not implemented.");
-          } } />
+            <div className="grid grid-cols-5 gap-x-4">
+              <OrderSummaryCard figure={data?.data.total_orders} />
+              <OrderSummaryCard
+                title="Pending"
+                legendColor="bg-blue" 
+                figure={data?.data.sellerOrderSummary.pending}
+              />
+              <OrderSummaryCard
+                title="Accepted"
+                figure={data?.data.sellerOrderSummary.accepted}
+                legendColor="bg-[#FFA600]"
+              />
+              <OrderSummaryCard
+                title="Dispatched"
+                figure={data?.data.sellerOrderSummary.dispatched}
+                legendColor="bg-[#FF6200]"
+              />
+              <OrderSummaryCard
+                title="Delivered"
+                legendColor="bg-primary"
+                figure={data?.data.sellerOrderSummary.delivered}
+              />
+            </div>
+            <OrderTabs tabs={tabs} table={table} />
+            <div className="relative">
+              <SellerOrderTable table={table} />
+              <OverlaySpinner open={isFetching} />
+            </div>
+          </MainLayout>
+          <Pagination<ISellerOrderQueryParams>
+            setQueryParam={setQueryParams}
+            totalPages={data?.totalPages ?? 0}
+            isFetching={isFetching}
+            queryParams={queryParams}
+            queryBuilder={SellerOrderQueryBuilder}
+          />
         </div>
-        
       ) : (
         <MainLayout
           title={
