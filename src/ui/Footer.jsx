@@ -5,6 +5,8 @@ import { FaXTwitter } from "react-icons/fa6";
 import { Link } from "react-router-dom"; // Import Link
 
 function Footer() {
+	const currentYear = new Date().getFullYear();
+
 	return (
 		<div className="grid footer_grid">
 			<div className="footer_logo_col">
@@ -39,7 +41,7 @@ function Footer() {
 				</ul>
 
 				<p className="copyright">
-					&copy; <span className="year">2024</span> VisiBuy. All rights
+					&copy; <span className="year">2024 - {currentYear}</span> VisiBuy. All rights
 					reserved.
 				</p>
 			</div>

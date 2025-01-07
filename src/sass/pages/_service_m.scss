@@ -123,6 +123,7 @@
 			.services_benefits {
 				// display: flex;
 				margin-left: 2rem;
+				list-style: disc !important;
 				// list-style-position: inside;
 				// text-align: center;
 				// display: flex;
@@ -202,6 +203,8 @@
 
 				img {
 					// transform: translateX(20%);
+					max-width: 519px !important;
+					height: 525px;
 					transform: translateY(20%);
 					// overflow: hidden;
 				}

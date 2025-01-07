@@ -10,6 +10,7 @@
 
 		.customers_heading {
 			font-size: 6.4rem;
+			font-weight: 700;
 			margin-bottom: 1.2rem;
 
 			@include respond(phone) {
@@ -52,9 +53,13 @@
 		// display: flex;
 		// gap: 4.8rem;
 		text-align: center;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
 
 		.iframe-div {
 			margin-bottom: 6.4rem;
+			justify-items: center;
 
 			iframe {
 
