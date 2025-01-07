@@ -22,6 +22,8 @@
 	background-color: var(--color-primary-80);
 	font-family: $font-primary;
 
+	
+
 	@include respond(phone) {
 		display: block;
 		margin-top: 4rem;
@@ -57,6 +59,10 @@
 			padding: 1.2rem 1.4rem;
 			background-color: var(--color-primary-90);
 			border-radius: 2rem;
+
+			animation-name: moveInBottom;
+			animation-duration: .6s;
+			animation-timing-function: ease-out;
 			// color: var(--color-white);
 
 			span {
@@ -98,6 +104,10 @@
 			width: 94rem;
 			margin-bottom: 3.2rem !important;
 
+			animation-name: moveInBottom;
+			animation-duration: 1s;
+			animation-timing-function: ease-out;
+
 			@include respond(phone) {
 				font-size: 4.8rem !important;
 				width: auto !important;
@@ -126,6 +136,10 @@
 			margin: 0 auto;
 			margin-bottom: 4.8rem;
 			font-family: $font-secondary;
+
+			animation-name: moveInTop;
+			animation-duration: .7s;
+			animation-timing-function: ease-out;
 
 			@include respond(phone) {
 				font-size: 2rem !important;
@@ -160,7 +174,10 @@
 		margin: 0 auto;
 		margin-bottom: 2.4rem;
 		font-family: $font-secondary;
-		transition: all moveInBottom 0.6s ease-in-out;
+		
+		animation-name: moveInRight;
+			animation-duration: .6s;
+			animation-timing-function: ease-out;
 		// transition: all 0.2s;
 
 		@include respond(phone) {

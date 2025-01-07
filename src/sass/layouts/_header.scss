@@ -37,6 +37,10 @@ height: auto;
 top: 0;
 z-index: 999;
 // margin-bottom: 4.8rem;
+
+animation-name: moveInTop;
+			animation-duration: .7s;
+			animation-timing-function: ease-out;
 }
 
 .header {

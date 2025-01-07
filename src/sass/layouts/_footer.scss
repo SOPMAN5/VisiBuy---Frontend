@@ -15,6 +15,10 @@
 	grid-template-columns: 3.6fr 1fr 1fr 1fr;
 	padding: 9.6rem 6.4rem;
 
+	animation: fadeIn linear;
+		animation-timeline: view();
+		animation-range: entry 0% cover 40%;
+	
 	@include respond(phone) {
 		padding: 4.2rem 2.4rem !important;
 	}
@@ -45,12 +49,20 @@
 
 		.footer_logo {
 			width: 18rem;
+
+			animation-name: moveInRight;
+				animation-duration: .8s;
+				animation-timing-function: ease-out;
 		}
 
 		.social_links {
 			display: flex;
 			gap: 1.6rem;
 			list-style: none;
+
+			animation-name: moveInTop;
+				animation-duration: .9s;
+				animation-timing-function: ease-out;
 
 			a {
 				font-size: 2.4rem;
@@ -60,6 +72,10 @@
 
 		.copyright {
 			margin-top: 4.2rem;
+
+			animation-name: moveInTop;
+				animation-duration: 1s;
+				animation-timing-function: ease-out;
 		}
 	}
 
@@ -70,10 +86,15 @@
 		color: var(--color-primary-80);
 		font-family: $font-secondary;
 
+		
 		.footer_heading {
 			font-size: 2rem;
 			font-weight: 700;
 			font-family: $font-primary;
+
+			animation-name: moveInBottom;
+					animation-duration: 1.1s;
+					animation-timing-function: ease-out;
 		}
 
 		.footer_nav {
@@ -81,6 +102,10 @@
 			gap: 1.6rem;
 			flex-direction: column;
 			text-decoration: none;
+
+			animation-name: moveInTop;
+				animation-duration: 1.2s;
+				animation-timing-function: ease-out;
 
 			& li {
 				list-style: none;

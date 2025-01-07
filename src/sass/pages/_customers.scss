@@ -13,6 +13,14 @@
 			font-weight: 700;
 			margin-bottom: 1.2rem;
 
+			animation: fadeIn linear;
+	animation-timeline: view();
+	animation-range: entry 0% cover 40%;
+
+	animation-name: moveInTop;
+			animation-duration: .9s;
+			animation-timing-function: ease-out;
+
 			@include respond(phone) {
 				font-size: 3.2rem!important;
 			}
@@ -33,6 +41,14 @@
 		.customers_subheading {
 			font-size: 2.4rem;
 			font-family: $font-secondary;
+
+			animation: fadeIn linear;
+	animation-timeline: view();
+	animation-range: entry 0% cover 40%;
+
+	animation-name: moveInTop;
+			animation-duration: 1s;
+			animation-timing-function: ease-out;
 
 			@include respond(tab-port) {
 				font-size: 2rem;
@@ -56,6 +72,14 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
+
+		animation: fadeIn linear;
+	animation-timeline: view();
+	animation-range: entry 0% cover 40%;
+
+	animation-name: moveInLeft;
+			animation-duration: 1.1s;
+			animation-timing-function: ease-out;
 
 		.iframe-div {
 			margin-bottom: 6.4rem;
@@ -84,6 +108,8 @@
 			text-align: left;
 			align-items: center;
 
+			
+
 			@include respond(tab-port) {
 				gap: 0rem;
 				width: 100%;
@@ -104,6 +130,14 @@
 				align-items: center;
 				padding-bottom: 2.4rem;
 
+				animation: fadeIn linear;
+		animation-timeline: view();
+		animation-range: entry 0% cover 40%;
+	
+		animation-name: moveInLeft;
+				animation-duration: .9s;
+				animation-timing-function: ease-out;
+
 				@include respond(phone) {
 					// display: block;
 					// flex-wrap: wrap;
@@ -118,6 +152,14 @@
 				color: var(--color-gray-60);
 				font-family: $font-primary;
 
+				animation: fadeIn linear;
+		animation-timeline: view();
+		animation-range: entry 0% cover 40%;
+	
+		animation-name: moveInRight;
+				animation-duration: .8s;
+				animation-timing-function: ease-out;
+
 				@include respond(phone) {
 					font-size: 4.8rem;
 				}
@@ -126,6 +168,7 @@
 			.step_text-box {
 				.step-heading {
 					font-size: 2.4rem;
+					font-weight: 700;
 					margin-bottom: 1.2rem;
 					line-height: 1.2;
 					text-align: left;
