@@ -54,6 +54,14 @@
 		.subheading {
 			@include subheading;
 
+			animation: fadeIn linear;
+		animation-timeline: view();
+		animation-range: entry 0% cover 40%;
+	
+		animation-name: moveInBottom;
+				animation-duration: .9s;
+				animation-timing-function: ease-out;
+
 			@include respond(tab-port) {
 				// padding: 4.8rem 6.4rem;
 				font-size: 1.4rem;;
@@ -67,10 +75,19 @@
 
 		.heading_tertiary {
 			font-size: 4.8rem;
+			font-weight: 700;
 			margin-top: 1rem;
 			line-height: 1.2;
 			font-family: $font-primary;
 			text-wrap: wrap;
+
+			animation: fadeIn linear;
+		animation-timeline: view();
+		animation-range: entry 0% cover 40%;
+	
+		animation-name: moveInBottom;
+				animation-duration: .8s;
+				animation-timing-function: ease-out;
 
 			@include respond(tab-port) {
 				// padding: 4.8rem 6.4rem;
@@ -97,6 +114,14 @@
 			border: none;
 			align-self: end;
 			text-align: center;
+
+			animation: fadeIn linear;
+		animation-timeline: view();
+		animation-range: entry 0% cover 40%;
+	
+		animation-name: moveInTop;
+				animation-duration: 1.4s;
+				animation-timing-function: ease-out;
 
 			@include respond(phone) {
 				display: block;
