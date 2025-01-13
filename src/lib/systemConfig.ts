@@ -7,3 +7,4 @@ export const RESPONSE_VALIDATION_EXIST = '{{MODEL}} already in use.';
 export const RESPONSE_ERROR_INVALID_DETAILS = 'Invalid {{FIELD}} details.';
 export const RESPONSE_ERROR_SERVER_ERROR = 'Something went wrong.';
 export const SUCCESS_RESPONSE_CREATE_RECORD = '{{MODEL}} created successfully.';
+export const SUCCESS_RESPONSE_UPDATE_RECORD = '{{MODEL}} updated successfully.';

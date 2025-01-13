@@ -15,6 +15,7 @@ import { useAppDispatch, useAppSelector } from "@/hooks/app-hooks";
 import { RootState } from "@/store/store";
 import { Role } from "@/modules/Auth/models/types";
 import { initialAuthState, logout, setCredentials } from "@/modules/Auth/features/slices";
+import { Toaster } from "@/ui/Toaster";
 const navlinks: NavItemProps[] = [
   { name: "Products", href: "products", iconName: "briefcase" },
   {
@@ -113,6 +114,7 @@ export function SellerDashboardLayout() {
         </Header>
         <main className="m-8 main content">
           <Outlet />
+          <Toaster/>
         </main>
       </div>
     </section>

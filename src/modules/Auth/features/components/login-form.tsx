@@ -40,7 +40,7 @@ export function LoginForm() {
         variant: "destructive",
         title: "Uh oh! Something went wrong.",
         description: error?.response.data.msg,
-        duration:5000
+        duration: 5000,
       });
     }
   };

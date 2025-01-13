@@ -263,7 +263,7 @@ export function SignUpForm() {
                 className="w-full px-12 h-16 text-xl"
                 size="sm"
               >
-                Sign In
+                Sign Up
                 {(buyerMutation.isPending ||sellerMutation.isPending) && (
                   <Loader2 className="ml-2 animate-spin" />
                 )}
@@ -278,7 +278,7 @@ export function SignUpForm() {
               </Button>
             </div>
             <Button asChild variant="link" className="h-2 text-blue">
-              <Link to="/login" className="text-xl   font-OpenSans">
+              <Link to="/reset-password" className="text-xl   font-OpenSans">
                 Forgot Password
               </Link>
             </Button>
