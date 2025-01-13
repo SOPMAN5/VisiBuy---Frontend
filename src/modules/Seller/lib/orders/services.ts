@@ -3,7 +3,7 @@ import {
   TUpdateSellerOrderStaus,
 } from "../../models/orders";
 import SellerOrderApi from "./api";
-import { transformSellerOrder } from "./transfomers";
+import { transformASellerOrder, transformSellerOrder } from "./transfomers";
 
 async function updateSellerOrderStatus(payload: TUpdateSellerOrderStaus) {
   const response = await SellerOrderApi.updateOrderStatus(payload);
@@ -13,8 +13,7 @@ async function updateSellerOrderStatus(payload: TUpdateSellerOrderStaus) {
 async function getOrderById(id: string) {
   const response = await SellerOrderApi.getOrder(id);
   return {
-    data: transformSellerOrder(response),
-    totalPages: response.totalPages,
+    data: transformASellerOrder(response),
   };
 }
 async function getOrderList(queryParams: ISellerOrderQueryParams) {

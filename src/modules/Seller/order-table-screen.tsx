@@ -17,6 +17,8 @@ import { Pagination } from "@/common/components/pagination";
 import { useMemo, useState } from "react";
 import { SellerOrderQueryBuilder } from "./lib/orders/order-query-builder";
 import { OverlaySpinner } from "@/common/components/modal-spinner";
+import { RootState } from "@/store/store";
+import { useAppSelector } from "@/hooks/app-hooks";
 const orders: ISellerOrder[] = [
   {
     id: "1",
@@ -39,6 +41,7 @@ const tabs: ITabs[] = [
 ];
 export function SellerOrderScreen() {
   const { orderId } = useParams();
+  const root = useAppSelector((state: RootState) => state.root);
   const [queryParams, setQueryParams] = useState<ISellerOrderQueryParams>({
     page: 1,
     pageSize: 10,
@@ -96,7 +99,7 @@ export function SellerOrderScreen() {
             <OrderTabs tabs={tabs} table={table} />
             <div className="relative">
               <SellerOrderTable table={table} />
-              <OverlaySpinner open={isFetching} />
+              <OverlaySpinner open={isFetching || root.isLoading} />
             </div>
           </MainLayout>
           <Pagination<ISellerOrderQueryParams>

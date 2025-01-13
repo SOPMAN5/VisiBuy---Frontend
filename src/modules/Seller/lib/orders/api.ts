@@ -11,7 +11,7 @@ class SellerOrderApiAdapter implements ISellerOrderRepository {
   async updateOrderStatus({ id, status }: TUpdateSellerOrderStaus) {
     const response = await axiosWithAuth.post(
       `/update/status`,
-      JSON.stringify({ order_id: id, status })
+      { order_id: id, status }
     );
     return response.data;
   }

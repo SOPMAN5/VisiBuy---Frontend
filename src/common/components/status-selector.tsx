@@ -11,10 +11,13 @@ import {
 } from "@/ui/Select";
 import { SelectTrigger } from "@radix-ui/react-select";
 import { cva } from "class-variance-authority";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState,useRef } from "react";
 import { useUpdateSellerOrderStatus } from "@/modules/Seller/mutations/order/useUpdateOrderStatus";
-
-const navVariants = cva(
+import { useAppDispatch } from "@/hooks/app-hooks";
+import { setLoading } from "@/store/rootReducer";
+import { useToast } from "@/ui/use-toast";
+import { SUCCESS_RESPONSE_UPDATE_RECORD } from "@/lib/systemConfig";
+const orderStatusVariants = cva(
   "text-lg w-[100px] h-10 focus:border-none outline-none bg-opacity-15",
   {
     variants: {
@@ -30,18 +33,50 @@ const navVariants = cva(
   }
 );
 
- function OrderSelectStatus({ status,id }: Readonly<{ status: TOrderStatus;id:string }>) {
-  const updateSellerOrderStatusMutation = useUpdateSellerOrderStatus()
-  const [orderstatus, setOrderStatus] = useState(status);
-  const handleSetOrderStatus = useCallback((status: TOrderStatus) => {
-    setOrderStatus(status);
-     updateSellerOrderStatusMutation.mutateAsync({id,status})
-     
-  }, []);
+function OrderSelectStatus({
+  status,
+  id,
+}: Readonly<{ status: TOrderStatus; id: string }>) {
+  const prevStatus = useRef(status);
+  const { toast, toasts } = useToast();
+  const dispatch = useAppDispatch();
+  const updateSellerOrderStatusMutation = useUpdateSellerOrderStatus();
+  const [orderStatus, setOrderStatus] = useState(status);
+ 
+  const handleSetOrderStatus = useCallback(
+    async (status: TOrderStatus) => {
+      prevStatus.current = orderStatus;
+      dispatch(setLoading(true));
+      try {
+        setOrderStatus(status);
+        await updateSellerOrderStatusMutation.mutateAsync({ id, status });
+        dispatch(setLoading(false));
+        toast({
+          variant: "success",
+          title: "Sucess",
+          description: SUCCESS_RESPONSE_UPDATE_RECORD.replace('{{MODEL}}','Order Status'),
+          duration: 5000,
+        });
+      } catch (error: any) {
+        dispatch(setLoading(false))
+        setOrderStatus(prevStatus.current); // if status update fails revert to old status
+        console.log(error?.response.data.msg,prevStatus);
+        toast({
+          variant: "destructive",
+          title: "Uh oh! Something went wrong.",
+          description: error?.response.data.msg,
+          duration: 5000,
+        });
+      }
+    },
+    [updateSellerOrderStatusMutation.isPending,orderStatus]
+  );
   return (
-    <Select onValueChange={handleSetOrderStatus}>
-      <SelectTrigger className={cn(navVariants({ status: orderstatus }))}>
-        <SelectValue placeholder={capitalize(orderstatus)} />
+    <Select onValueChange={handleSetOrderStatus} value={orderStatus}>
+      <SelectTrigger
+        className={cn(orderStatusVariants({ status: orderStatus }))}
+      >
+        <SelectValue placeholder={capitalize(orderStatus)} />
       </SelectTrigger>
       <SelectContent className="bg-[#d5d1d1] font-OpenSans ">
         <SelectItem value="cancelled" className="focus:bg-[#C8E2FF]">
@@ -63,4 +98,4 @@ const navVariants = cva(
     </Select>
   );
 }
-export default React.memo(OrderSelectStatus)
+export default React.memo(OrderSelectStatus);

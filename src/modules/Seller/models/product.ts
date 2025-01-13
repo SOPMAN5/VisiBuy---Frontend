@@ -5,7 +5,7 @@ import {
 } from "@/lib/systemConfig";
 import { ZodType, z } from "zod";
 
-export interface SellerProductSate {
+export interface SellerProductState {
   products: ISellerProduct[];
   selectedProduct: ISellerProduct | null;
 }
