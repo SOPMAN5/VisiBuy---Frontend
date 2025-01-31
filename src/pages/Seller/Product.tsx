@@ -1,5 +1,5 @@
-import { ProductScreen } from "@/modules/Seller/product-screen";
+import { ProductScreen } from "@/modules/Seller/features/product/product-screen";
 
-export function SellerProductPage(){
-    return <ProductScreen/>
+export function SellerProductPage() {
+  return <ProductScreen />;
 }

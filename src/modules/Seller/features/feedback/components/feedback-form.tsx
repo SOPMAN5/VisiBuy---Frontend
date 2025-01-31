@@ -8,23 +8,52 @@ import {
 } from "@/ui/Form";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { FeedbackSchema } from "../models/types";
+import { FeedbackSchema } from "@/modules/Seller/models/feedback";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { on } from "events";
 import Input from "@/ui/Input";
 import { Textarea } from "@/ui/Texarea";
 import { SearchableSelect } from "@/ui/SearchableSelect";
+import { useCreateSellerFeedback } from "@/modules/Seller/mutations/feedback/useCreateFeedback";
+import { useToast } from "@/ui/use-toast";
+import { SUCCESS_RESPONSE_CREATE_RECORD } from "@/lib/systemConfig";
+import { Button } from "@/ui/Button";
+import { Loader2 } from "lucide-react";
 
 export function FeedBackForm() {
+  const { toast, toasts } = useToast();
+  const sellerFeedbackMutation = useCreateSellerFeedback();
   const form = useForm<z.infer<typeof FeedbackSchema>>({
+    mode: "onTouched",
     resolver: zodResolver(FeedbackSchema),
     defaultValues: {
-      fullName: "",
+      name: "",
       email: "",
-      message: "",
-    },
+      issue: "",
+    }
   });
-  const onSubmit = async (values: z.infer<typeof FeedbackSchema>) => {};
+  const onSubmit = async (values: z.infer<typeof FeedbackSchema>) => {
+    try {
+      await sellerFeedbackMutation.mutateAsync(values);
+      form.reset()
+      toast({
+        variant: "success",
+        title: "",
+        description: SUCCESS_RESPONSE_CREATE_RECORD.replace(
+          "{{MODEL}}",
+          "Feedback"
+        ),
+        duration: 5000,
+      });
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: error?.response.data.msg,
+        duration: 5000,
+      });
+    }
+  };
   return (
     <div>
       <h3 className="font-Montserrat font-semibold text-secondary-foreground text-3xl">
@@ -40,7 +69,7 @@ export function FeedBackForm() {
         </a>{" "}
         or through the form below:
       </p>
-      
+
       <Form {...form}>
         <form
           className="flex flex-col gap-6 mt-8 max-w-screen-sm"
@@ -48,7 +77,7 @@ export function FeedBackForm() {
         >
           <FormField
             control={form.control}
-            name="fullName"
+            name="name"
             render={({ field }) => (
               <FormItem>
                 <FormControl>
@@ -75,13 +104,13 @@ export function FeedBackForm() {
                     //   icon={<Icon name="mail" className="h-8 w-8" />}
                   />
                 </FormControl>
-                <FormMessage /> 
+                <FormMessage />
               </FormItem>
             )}
           />
           <FormField
             control={form.control}
-            name="message"
+            name="issue"
             render={({ field }) => (
               <FormItem>
                 <FormControl>
@@ -96,6 +125,21 @@ export function FeedBackForm() {
               </FormItem>
             )}
           />
+          <div className="pt-4 w-full flex justify-end">
+            <Button
+              disabled={
+                sellerFeedbackMutation.isPending || !form.formState.isValid
+              }
+              type="submit"
+              className="bg-blue border-blue px-12 h-12 text-xl hover:border-blue hover:text-blue"
+              size="sm"
+            >
+              Submit
+              {sellerFeedbackMutation.isPending && (
+                <Loader2 className="ml-2 animate-spin" />
+              )}
+            </Button>
+          </div>
         </form>
       </Form>
     </div>

@@ -1,6 +1,6 @@
-import { OrderSreen } from "@/modules/Orders/order-screen";
-import { SellerOrderScreen } from "@/modules/Seller/order-table-screen";
 
-export function SellerOrderPage(){
-    return <SellerOrderScreen/>
+import { SellerOrderScreen } from "@/modules/Seller/features/order-table/order-table-screen";
+
+export function SellerOrderPage() {
+  return <SellerOrderScreen />;
 }

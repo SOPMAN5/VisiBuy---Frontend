@@ -8,14 +8,19 @@ import { NavItemProps } from "@/types/navItem";
 import { UserProfileCard } from "@/common/components/user-profile-card";
 import { Notification } from "@/common/components/notification";
 import { SearchBar } from "@/common/components/search-bar";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { createQueryString } from "@/lib/utils";
 import { useGetMeQuery } from "@/modules/Auth/queries/queries";
 import { useAppDispatch, useAppSelector } from "@/hooks/app-hooks";
 import { RootState } from "@/store/store";
 import { Role } from "@/modules/Auth/models/types";
-import { initialAuthState, logout, setCredentials } from "@/modules/Auth/features/slices";
+import {
+  initialAuthState,
+  logout,
+  setCredentials,
+} from "@/modules/Auth/features/slices";
 import { Toaster } from "@/ui/Toaster";
+import { dashboardConfig } from "@/lib/config";
 const navlinks: NavItemProps[] = [
   { name: "Products", href: "products", iconName: "briefcase" },
   {
@@ -28,7 +33,7 @@ const navlinks: NavItemProps[] = [
 export function SellerDashboardLayout() {
   const auth = useAppSelector((state: RootState) => state.auth);
   const dispatch = useAppDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { isLoading, isError, data } = useGetMeQuery(auth.role as Role);
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -40,7 +45,12 @@ export function SellerDashboardLayout() {
       })
     );
   }, [data]);
-
+  const sellerLinks = useMemo(() => {
+    return {
+      helpSupport: dashboardConfig.getFullPath("seller", "helpSupport"),
+      feedback: dashboardConfig.getFullPath("seller", "feedback"),
+    };
+  }, []);
   const handleAddProduct = useCallback(
     function () {
       const queryStrings = createQueryString(
@@ -52,10 +62,10 @@ export function SellerDashboardLayout() {
     },
     [searchParams]
   );
-  const handleLogout = ()=>{
-    dispatch(logout())
-    navigate('/login')
-  }
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/login");
+  };
   return (
     <section className="flex min-h-screen relative">
       <div className=" w-[20%] ">
@@ -77,14 +87,14 @@ export function SellerDashboardLayout() {
           <div className="w-full px-12 my-48">
             <div className="rounded-xl bg-blue-200 p-12 w-full">
               <Link
-                to="feedback"
+                to={sellerLinks.feedback}
                 className="text-blue flex items-center text-3xl font-OpenSans font-semibold gap-4"
               >
                 <img src="/feedback.svg" width={30} alt="feedback " />{" "}
                 <h3>Feedback</h3>
               </Link>
               <Link
-                to="call-support"
+                to={sellerLinks.helpSupport}
                 className="text-blue flex items-center text-3xl font-OpenSans font-semibold gap-8 my-6"
               >
                 <img src="/call-support.svg" width={20} alt="support" />{" "}
@@ -114,7 +124,7 @@ export function SellerDashboardLayout() {
         </Header>
         <main className="m-8 main content">
           <Outlet />
-          <Toaster/>
+          <Toaster />
         </main>
       </div>
     </section>
