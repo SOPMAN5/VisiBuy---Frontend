@@ -1,21 +1,21 @@
 import { MainLayout } from "@/layouts/main-layout";
-import { OrderSummaryCard } from "../Orders/features/components/order-summary-card";
-import { SellerOrderTable } from "./features/order-table/order-table";
+import { OrderSummaryCard } from "../../../Orders/features/components/order-summary-card";
+import { SellerOrderTable } from "./order-table";
 import {
   getCoreRowModel,
   getFilteredRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ISellerOrder, ISellerOrderQueryParams } from "./models/orders";
-import { columns } from "./features/order-table/column-def";
-import { ITabs, OrderTabs } from "./features/order-table/order-tabs";
+import { ISellerOrder, ISellerOrderQueryParams } from "../../models/orders";
+import { columns } from "./column-def";
+import { ITabs, OrderTabs } from "./order-tabs";
 import { Link, Outlet, useMatch, useParams } from "react-router-dom";
 import { dashboardConfig } from "@/lib/config";
 import Icon from "@/ui/Icon";
-import { useGetSellerOrdersQuery } from "./queries/order/queries";
+import { useGetSellerOrdersQuery } from "../../queries/order/queries";
 import { Pagination } from "@/common/components/pagination";
 import { useMemo, useState } from "react";
-import { SellerOrderQueryBuilder } from "./lib/orders/order-query-builder";
+import { SellerOrderQueryBuilder } from "../../lib/orders/order-query-builder";
 import { OverlaySpinner } from "@/common/components/modal-spinner";
 import { RootState } from "@/store/store";
 import { useAppSelector } from "@/hooks/app-hooks";
@@ -49,7 +49,10 @@ export function SellerOrderScreen() {
   });
   const match = useMatch(dashboardConfig.getFullPath("seller", "orders"));
   const isMathRoute = match ? true : false;
-  const { data, isFetching } = useGetSellerOrdersQuery(queryParams, isMathRoute);
+  const { data, isFetching } = useGetSellerOrdersQuery(
+    queryParams,
+    isMathRoute
+  );
   const table = useReactTable({
     initialState: {
       columnVisibility: {
@@ -77,7 +80,7 @@ export function SellerOrderScreen() {
               <OrderSummaryCard figure={data?.data.total_orders} />
               <OrderSummaryCard
                 title="Pending"
-                legendColor="bg-blue" 
+                legendColor="bg-blue"
                 figure={data?.data.sellerOrderSummary.pending}
               />
               <OrderSummaryCard

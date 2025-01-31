@@ -24,6 +24,7 @@ export function LoginForm() {
   const loginMutation = useLogin();
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
+    mode:"onTouched",
     defaultValues: {
       pass: "",
       email: "",

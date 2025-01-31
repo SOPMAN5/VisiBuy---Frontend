@@ -17,6 +17,10 @@ import { FeedbackPage } from "./pages/Seller/Feedback";
 import { SellerOrderPage } from "./pages/Seller/Order";
 import { SellerOrderDetailsPage } from "./pages/Seller/OrderDetails";
 import { PrivateRoute } from "./common/components/private-route";
+import { HelpSupportPage } from "./pages/Seller/help-support/help-support";
+import path from "path";
+import { PlacingOrderPage } from "./pages/Seller/help-support/placing-order";
+import { OrderPaymentPage } from "./pages/Seller/help-support/order-payment";
 const router = createHashRouter([
   {
     element: <AppLayout />,
@@ -77,6 +81,14 @@ const router = createHashRouter([
         element: <SellerOrderPage />,
         children: [
           { path: "view/:orderId", element: <SellerOrderDetailsPage /> },
+        ],
+      },
+      {
+        path: "call-support",
+        element: <HelpSupportPage />,
+        children: [
+          { path: "placing-order", element: <PlacingOrderPage /> },
+          { path: "order-payment", element: <OrderPaymentPage /> },
         ],
       },
     ],

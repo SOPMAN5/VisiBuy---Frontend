@@ -6,10 +6,17 @@ import {
 } from "@/lib/systemConfig";
 import { z, ZodType } from "zod";
 
+export interface SupportCardProps {
+  title: string;
+  icon: string;
+  link:string;
+  key:string
+}
+
 export interface FeedbackDto {
-  fullName: string;
+  name: string;
   email: string;
-  message: string;
+  issue: string;
 }
 
 export const FeedbackSchema: ZodType<FeedbackDto> = z.object({
@@ -26,29 +33,34 @@ export const FeedbackSchema: ZodType<FeedbackDto> = z.object({
     .max(100, {
       message: VALIDATION_MAX_LENGTH.replace("{{FIELD}}", "Email"),
     }),
-  fullName: z
+  name: z
     .string({
-      required_error: VALIDATION_REQUIRED.replace("{{FIELD}}", "Firstname"),
-      invalid_type_error: VALIDATION_REQUIRED.replace("{{FIELD}}", "Full Name"),
+      required_error: VALIDATION_REQUIRED.replace("{{FIELD}}", "Name"),
+      invalid_type_error: VALIDATION_REQUIRED.replace("{{FIELD}}", "Name"),
     })
     .min(2, {
-      message: VALIDATION_MIN_LENGTH.replace("{{FIELD}}", "Firstname"),
+      message: VALIDATION_MIN_LENGTH.replace("{{FIELD}}", "Name"),
     })
     .max(100, {
-      message: VALIDATION_MAX_LENGTH.replace("{{FIELD}}", "Firstname"),
+      message: VALIDATION_MAX_LENGTH.replace("{{FIELD}}", "Name"),
     }),
-  message: z
+  issue: z
     .string({
-      required_error: VALIDATION_REQUIRED.replace("{{FIELD}}", "Firstname"),
+      required_error: VALIDATION_REQUIRED.replace("{{FIELD}}", "Issue Message"),
       invalid_type_error: VALIDATION_INVALID_FIELD.replace(
         "{{FIELD}}",
-        "Firstname"
+        "Issue Message"
       ),
     })
     .min(2, {
-      message: VALIDATION_MIN_LENGTH.replace("{{FIELD}}", "Firstname"),
+      message: VALIDATION_MIN_LENGTH.replace("{{FIELD}}", "Issue Message"),
     })
-    .max(200, {
-      message: VALIDATION_MAX_LENGTH.replace("{{FIELD}}", "Firstname"),
+    .max(250, {
+      message: VALIDATION_MAX_LENGTH.replace("{{FIELD}}", "Issue Message"),
     }),
 });
+
+export type TSellerFedbackResponse = {
+  msg: string;
+  report: string;
+};

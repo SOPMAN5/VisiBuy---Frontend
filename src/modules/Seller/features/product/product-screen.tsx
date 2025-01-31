@@ -1,16 +1,16 @@
 import { Button } from "@/ui/Button";
-import { ProductGrid } from "./features/product/components/product-grid";
-import { ISellerProductQueryParams } from "./models/product";
+import { ProductGrid } from "./components/product-grid";
+import { ISellerProductQueryParams } from "../../models/product";
 import { Plus } from "lucide-react";
-import { AddProductModal } from "./features/product/components/modals/add-product-modal";
+import { AddProductModal } from "./components/modals/add-product-modal";
 import { useSearchParams } from "react-router-dom";
 import { useCallback, useState } from "react";
 import { createQueryString } from "@/lib/utils";
 import { MainLayout } from "@/layouts/main-layout";
 import { Spinner } from "@/common/components/spinner";
 import { Pagination } from "@/common/components/pagination";
-import { useGetProducts } from "./queries/product/queries";
-import { SellerProductQueryBuilder } from "./lib/products/product-query-builder";
+import { useGetProducts } from "../../queries/product/queries";
+import { SellerProductQueryBuilder } from "../../lib/products/product-query-builder";
 
 import { OverlaySpinner } from "@/common/components/modal-spinner";
 
@@ -32,7 +32,7 @@ export function ProductScreen() {
     [searchParams]
   );
   const { data, isFetching } = useGetProducts(queryParams);
-  
+
   // console.log(  data?.totalPages ,"totalpages");
   return (
     <div>
@@ -67,12 +67,12 @@ export function ProductScreen() {
         <OverlaySpinner open={isFetching} />
       </MainLayout>
       <Pagination<ISellerProductQueryParams>
-        totalPages={data?.totalPages ??0 }
+        totalPages={data?.totalPages ?? 0}
         setQueryParam={setQueryParams}
         queryParams={queryParams}
         queryBuilder={SellerProductQueryBuilder}
         isFetching={isFetching}
       />
-    </div> 
+    </div>
   );
 }
