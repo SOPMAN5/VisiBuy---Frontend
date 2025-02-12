@@ -21,6 +21,19 @@ import { HelpSupportPage } from "./pages/Seller/help-support/help-support";
 import path from "path";
 import { PlacingOrderPage } from "./pages/Seller/help-support/placing-order";
 import { OrderPaymentPage } from "./pages/Seller/help-support/order-payment";
+import BuyerDashboardLayout from "./layouts/buyer/BuyerDashboardLayout";
+import BuyerHomePage from "./pages/Buyer/Home";
+import BuyerDashboardPage from "./pages/Buyer/Dashboard";
+import BuyerProductsPage from "./pages/Buyer/Products";
+import BuyerTrackOrderPage from "./pages/Buyer/TrackOrder";
+import BuyerCartPage from "./pages/Buyer/Cart";
+import BuyerNotificationsPage from "./pages/Buyer/Notifications";
+import BuyerProfilePage from "./pages/Buyer/Profile";
+
+
+
+
+
 const router = createHashRouter([
   {
     element: <AppLayout />,
@@ -91,6 +104,24 @@ const router = createHashRouter([
           { path: "order-payment", element: <OrderPaymentPage /> },
         ],
       },
+    ],
+  },
+  // Buyer Dashboard Routes
+  {
+    path: "/dashboard/buyer",
+    element: (
+      <PrivateRoute>
+        <BuyerDashboardLayout />
+      </PrivateRoute>
+    ),
+    children: [
+      { index: true, element: <BuyerHomePage /> },
+      { path: "analytics", element: <BuyerDashboardPage /> },
+      { path: "purchases", element: <BuyerProductsPage /> },
+      { path: "track-order", element: <BuyerTrackOrderPage /> },
+      { path: "carts", element: <BuyerCartPage /> },
+      { path: "notification", element: <BuyerNotificationsPage /> },
+      { path: "profile", element: <BuyerProfilePage /> },
     ],
   },
 ]);

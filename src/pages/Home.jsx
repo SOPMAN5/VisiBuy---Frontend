@@ -9,6 +9,7 @@ import ServicesManagement from "../ui/ServicesManagement";
 import ServicesTray from "../ui/ServicesTray";
 import Testimonials from "../ui/Testimonials";
 
+
 function Home() {
 	return (
 		<>
