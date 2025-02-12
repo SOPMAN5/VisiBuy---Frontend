@@ -16,6 +16,7 @@ const ProductCategoryBtn: React.FC<ProductCategoryBtnProps> = ({ text, link }) =
       }
     >
       {text} 
+      
     </NavLink>
   );
 };

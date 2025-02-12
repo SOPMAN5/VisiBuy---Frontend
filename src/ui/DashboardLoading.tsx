@@ -21,7 +21,7 @@ const DashboardLoading: React.FC = () => {
       {/* Outlet Card Section */}
       <h2 className="text-2xl font-bold mb-2">Outlets</h2>
       <p className="text-gray-600 mb-4">
-        🎉 We just released the referral code feature on our dashboard. To earn delivery points,{" "}
+        🎉 We just released the referral code feature on our dashboard. To earn delivery points,
         <a href="#" className="text-blue-400 underline">Try it out.</a>
       </p>
 
