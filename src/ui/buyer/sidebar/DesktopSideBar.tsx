@@ -37,7 +37,7 @@ const DesktopSideBar = () => {
         </div>
 
         {/* Navigation Links */}
-        <nav className="flex flex-col gap-6">
+        <nav className="flex flex-col gap-4">
           {buyerNavItems.map((item) => {
             const url = buildUrl(basePath, item.path);
             const isActive = location.pathname === url;
