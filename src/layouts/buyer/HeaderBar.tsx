@@ -60,7 +60,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({
           {/* Left Side: Menu Icon + Logo (wrapped in a Link to buyer home) */}
           <div className="flex items-center gap-4">
             <FaBars
-              className="text-xl text-blue cursor-pointer sm:hidden"
+              className="text-4xl text-blue font-extrabold cursor-pointer sm:hidden"
               onClick={onMenuClick} // Use the passed callback to open the sidebar
             />
             <Link to={homeUrl} className="block sm:hidden">

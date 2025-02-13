@@ -5,11 +5,9 @@ import { useNavigate } from "react-router-dom";
 const SearchBox = ({
   placeholder,
   onSearch,
-  
 }: {
   placeholder: string;
   onSearch?: (query: string) => void;
-  
 }) => {
   const [query, setQuery] = useState("");
   const navigate = useNavigate();
@@ -22,11 +20,9 @@ const SearchBox = ({
   };
 
   return (
-    <div
-      className={`flex items-center bg-blue-200 p-2 rounded-md  w-[290px]`}
-    >
+    <div className="flex items-center bg-blue-200 p-2 rounded-md w-[310px] lg:w-[290px]">
       <FaSearch
-        className="text-blue mx-2 cursor-pointer"
+        className="text-blue text-xl mx-2 cursor-pointer"
         onClick={handleSearch}
       />
       <input
@@ -35,7 +31,7 @@ const SearchBox = ({
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-        className="w-full bg-transparent focus:outline-none placeholder-blue font-semibold"
+        className="w-full bg-transparent focus:outline-none placeholder-blue font-semibold text-blue text-[13px] lg:text-[12px] caret-blue"
       />
     </div>
   );
