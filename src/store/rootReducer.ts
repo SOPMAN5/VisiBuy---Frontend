@@ -23,7 +23,7 @@ const rootReducer = combineReducers({
   auth: authReducer,
   toast: toastReducer,
   seller: sellerReducer,
-  // buyer: buyerReducer,
+  buyer: buyerReducer,
   root: rootSlice.reducer,
 });
 export const { setError, setLoading } = rootSlice.actions;
