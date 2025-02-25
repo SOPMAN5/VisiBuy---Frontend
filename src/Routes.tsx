@@ -26,6 +26,7 @@ import BuyerHomePage from "./pages/Buyer/Home";
 import BuyerDashboardPage from "./pages/Buyer/Dashboard";
 import BuyerProductsPage from "./pages/Buyer/Products";
 import BuyerTrackOrderPage from "./pages/Buyer/TrackOrder";
+// import BuyerOrderDetailsPage from "./pages/Buyer/OrderDetails"
 import BuyerCartPage from "./pages/Buyer/Cart";
 import BuyerNotificationsPage from "./pages/Buyer/Notifications";
 import BuyerProfilePage from "./pages/Buyer/Profile";
@@ -117,8 +118,18 @@ const router = createHashRouter([
       { index: true, element: <BuyerHomePage /> },
       { path: "analytics", element: <BuyerDashboardPage /> },
       { path: "purchases", element: <BuyerProductsPage /> },
+
+      {
+        path: "track-order",
+        element: <BuyerTrackOrderPage />,
+        // children: [
+        //   { path: "view/:orderId", element: <BuyerOrderDetailsPage /> }, 
+        // ],
+      },
+
       { path: "product/:id", element: <BuyerProductDetails /> },
       { path: "track-order", element: <BuyerTrackOrderPage /> },
+
       { path: "carts", element: <BuyerCartPage /> },
       { path: "notification", element: <BuyerNotificationsPage /> },
       { path: "profile", element: <BuyerProfilePage /> },
