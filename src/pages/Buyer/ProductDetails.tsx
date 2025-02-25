@@ -29,7 +29,7 @@ function ProductDetails() {
 
   const handleOrderSuccess = () => {
     setShowOrderSuccess(true);
-    TODO;
+    //TODO;
     // dispatch(
     //   addToCart()
     // );
