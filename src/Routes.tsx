@@ -21,6 +21,10 @@ import { HelpSupportPage } from "./pages/Seller/help-support/help-support";
 import path from "path";
 import { PlacingOrderPage } from "./pages/Seller/help-support/placing-order";
 import { OrderPaymentPage } from "./pages/Seller/help-support/order-payment";
+import {
+  
+  PaymentFaqPage,
+} from "./pages/Seller/help-support/payment-faq";
 const router = createHashRouter([
   {
     element: <AppLayout />,
@@ -64,6 +68,7 @@ const router = createHashRouter([
   { path: "/login", element: <LoginPage /> },
   { path: "/signup", element: <SignUpPage /> },
   { path: "/reset-password", element: <PassowordRestPage /> },
+
   {
     path: "/dashboard/seller",
 
@@ -89,6 +94,10 @@ const router = createHashRouter([
         children: [
           { path: "placing-order", element: <PlacingOrderPage /> },
           { path: "order-payment", element: <OrderPaymentPage /> },
+          {
+            path: "faq",
+            children: [{ path: "payment", element: <PaymentFaqPage /> }],
+          },
         ],
       },
     ],
