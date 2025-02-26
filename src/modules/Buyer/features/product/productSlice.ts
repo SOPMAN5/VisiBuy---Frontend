@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { setPriceRange } from "../filter/filterSlice";
+import axios from "axios";
 
 interface Product {
   sizes: number[];
@@ -23,21 +24,26 @@ const initialState: ProductState = {
 export const fetchProducts = createAsyncThunk(
   "products/fetch",
   async (_, { dispatch }) => {
-    const response = await fetch("https://fakestoreapi.com/products");
-    const data = await response.json();
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}list`);
+      const data = response.data;
 
-    // Extract min & max prices
-    const prices = data.map((p: any) => p.price);
-    const minPrice = Math.min(...prices);
-    const maxPrice = Math.max(...prices);
+      // Extract min & max prices
+      const prices = data.map((p: any) => p.price);
+      const minPrice = Math.min(...prices);
+      const maxPrice = Math.max(...prices);
 
-    // Set price range dynamically
-    dispatch(setPriceRange([minPrice, maxPrice]));
+      // Set price range dynamically in Redux store
+      dispatch(setPriceRange([minPrice, maxPrice]));
 
-    console.log(data);
-    return data.map((product: any) => ({
-      ...product,
-    }));
+      console.log(data);
+      return data.map((product: any) => ({
+        ...product,
+      }));
+    } catch (error) {
+      console.error("Error fetching products:", error);
+      throw error;
+    }
   }
 );
 

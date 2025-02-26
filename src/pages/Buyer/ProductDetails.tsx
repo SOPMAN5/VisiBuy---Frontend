@@ -1,7 +1,6 @@
 import { addToCart } from "@/modules/Buyer/features/cart/cartSlice";
 import OrderSuccess from "@/ui/buyer/OrderSuccess";
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 
@@ -15,8 +14,10 @@ interface Product {
   storeAvatar: string;
   productName: string;
   sizes: number[];
-  price: string;
-  colors: string[];
+  price: number;
+  color: string[];
+  name: string;
+  quantity: number;
 }
 
 function ProductDetails() {
@@ -28,11 +29,9 @@ function ProductDetails() {
   const [showOrderSuccess, setShowOrderSuccess] = useState(false);
 
   const handleOrderSuccess = () => {
+    if (!data) return;
     setShowOrderSuccess(true);
-    //TODO;
-    // dispatch(
-    //   addToCart()
-    // );
+    dispatch(addToCart(data));
   };
 
   return (
