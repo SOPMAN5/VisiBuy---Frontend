@@ -1,10 +1,10 @@
-// src/pages/buyer/BuyerTrackOrderPage.tsx
 import { useEffect, useState } from "react";
+import { Outlet, useOutlet } from "react-router-dom";
 import OrderStatusButtons from "../../modules/Buyer/features/track-order/components/OrderStatusButtons";
 import SearchOrder from "../../modules/Buyer/features/track-order/components/SearchOrder";
 import OrderCard from "../../modules/Buyer/features/track-order/components/OrderCard";
-import { TOrderStatus } from "../../types/status";
 import PurchasingHistory from "@/modules/Buyer/features/track-order/components/PurchasingHistory";
+import { TOrderStatus } from "../../types/status";
 
 interface Order {
   id: string;
@@ -22,7 +22,7 @@ const BuyerTrackOrderPage: React.FC = () => {
   const [statusFilter, setStatusFilter] = useState<FilterStatus>("all");
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Fetch orders (mock data for now)
+  // Use mock data (no API fetch)
   useEffect(() => {
     const mockData: Order[] = [
       {
@@ -88,11 +88,9 @@ const BuyerTrackOrderPage: React.FC = () => {
   // Filter orders based on status and search query
   useEffect(() => {
     let updated = [...orders];
-
     if (statusFilter !== "all") {
       updated = updated.filter((order) => order.status === statusFilter);
     }
-
     if (searchQuery.trim()) {
       updated = updated.filter(
         (order) =>
@@ -100,7 +98,6 @@ const BuyerTrackOrderPage: React.FC = () => {
           order.id.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
-
     setFilteredOrders(updated);
   }, [orders, statusFilter, searchQuery]);
 
@@ -112,31 +109,38 @@ const BuyerTrackOrderPage: React.FC = () => {
     setSearchQuery(query);
   };
 
+  // useOutlet returns the element for a child route if it exists
+  const outlet = useOutlet();
+
   return (
     <div className="flex flex-col gap-12 p-12">
-      {/* Row 1: OrderStatusButtons + SearchOrder */}
-      <div className="flex items-center justify-between">
-        <OrderStatusButtons
-          currentStatus={statusFilter}
-          onStatusChange={handleStatusChange}
-        />
-        <SearchOrder onSearch={handleSearch} />
-      </div>
+      {!outlet ? (
+        <>
+          {/* Row 1: OrderStatusButtons + SearchOrder */}
+          <div className="flex items-center justify-between">
+            <OrderStatusButtons
+              currentStatus={statusFilter}
+              onStatusChange={handleStatusChange}
+            />
+            <SearchOrder onSearch={handleSearch} />
+          </div>
 
-      {/* Row 2: OrderCards + PurchasingHistory */}
-      <div className="flex gap-12">
-        {/* OrderCard list */}
-        <div className="flex-1 flex flex-col gap-4">
-          {filteredOrders.map((order) => (
-            <OrderCard key={order.id} order={order} />
-          ))}
-        </div>
-
-        {/* Right side: PurchasingHistory */}
-        <div className="w-64 hidden lg:block">
-          <PurchasingHistory />
-        </div>
-      </div>
+          {/* Row 2: OrderCards + PurchasingHistory */}
+          <div className="flex gap-12">
+            <div className="flex-1 flex flex-col gap-4">
+              {filteredOrders.map((order) => (
+                <OrderCard key={order.id} order={order} />
+              ))}
+            </div>
+            <div className="w-64 hidden lg:block">
+              <PurchasingHistory />
+            </div>
+          </div>
+        </>
+      ) : (
+        // When a child route (OrderDetailsPage) is active, render it and hide the controls.
+        <div>{outlet}</div>
+      )}
     </div>
   );
 };
