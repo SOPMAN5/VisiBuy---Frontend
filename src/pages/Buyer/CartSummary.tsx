@@ -9,13 +9,13 @@ const CartSummary = () => {
   const cartItems = useSelector((state: RootState) => state.buyer.cart.items);
   const [showDeliveryDetails, setShowDeliveryDetails] = useState(false);
 
-  const DELIVERY_FEE = 1000;
-  const VAT = 200;
-
   const subtotal = cartItems.reduce(
     (acc, item) => acc + item.price * item.quantity,
     0
   );
+
+  const DELIVERY_FEE = subtotal * 0.05;
+  const VAT = subtotal * 0.075;
   const total = subtotal + DELIVERY_FEE + VAT;
 
   return (

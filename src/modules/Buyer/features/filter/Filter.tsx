@@ -9,9 +9,6 @@ import {
 import { RootState } from "@/store/store";
 import { ChevronDown, ChevronUp, ListFilterIcon } from "lucide-react";
 
-const sizes = [7, 8, 9, 10];
-const colors = ["Red", "Blue", "Black", "White"];
-
 const FilterComponent = ({
   onApplyFilters,
 }: {
@@ -20,6 +17,15 @@ const FilterComponent = ({
   const dispatch = useDispatch();
   const filters = useSelector((state: RootState) => state.buyer.filters);
 
+  const products = useSelector((state: any) => state.buyer.products) || [];
+  const productSizes = products.map((product: any) => product.sizes);
+  const sizes = [...productSizes];
+  const productColors = products.map((product: any) => product.colors);
+  const colors = [...productColors];
+  const prices = products.map((p: any) => p.price);
+  const minPrice = Math.min(...prices);
+  const maxPrice = Math.max(...prices);
+
   const [showSizeDropdown, setShowSizeDropdown] = useState(false);
   const [showColorDropdown, setShowColorDropdown] = useState(false);
   const [showPriceDropdown, setShowPriceDropdown] = useState(false);
@@ -27,7 +33,7 @@ const FilterComponent = ({
 
   const handleSizeChange = (size: number) => {
     const newSizes = filters.size.includes(size)
-      ? filters.size.filter((s) => s !== size)
+      ? filters.size.filter((s: any) => s !== size)
       : [...filters.size, size];
 
     dispatch(setSizeFilter(newSizes));
@@ -35,7 +41,7 @@ const FilterComponent = ({
 
   const handleColorChange = (color: string) => {
     const newColors = filters.color.includes(color)
-      ? filters.color.filter((c) => c !== color)
+      ? filters.color.filter((c: any) => c !== color)
       : [...filters.color, color];
 
     dispatch(setColorFilter(newColors));
@@ -134,14 +140,14 @@ const FilterComponent = ({
               <div className='mt-2'>
                 <input
                   type='range'
-                  min='0'
-                  max='1000'
+                  min={minPrice}
+                  max={maxPrice}
                   value={filters?.priceRange[1]}
                   onChange={handlePriceChange}
                   className='w-full'
                 />
                 <span className='block text-center'>
-                  Max Price: ${filters?.priceRange[1]}
+                  Max Price: #{filters?.priceRange[1]}
                 </span>
               </div>
             )}
@@ -158,7 +164,7 @@ const FilterComponent = ({
             <button
               onClick={() => {
                 dispatch(resetFilters());
-                // onApplyFilters();
+                onApplyFilters();
               }}
               className='bg-gray-400 text-white px-4 py-2 rounded-md'
             >

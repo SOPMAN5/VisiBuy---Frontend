@@ -24,7 +24,8 @@ const ProductSkeleton: React.FC<ProductSkeletonProps> = ({ product }) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const handleAddToCart = (e: React.MouseEvent) => {
-    e.preventDefault(); // Prevent navigation
+    // prevent default navigation
+    e.preventDefault();
 
     dispatch(
       addToCart({
@@ -43,14 +44,14 @@ const ProductSkeleton: React.FC<ProductSkeletonProps> = ({ product }) => {
     <div className='relative w-fit'>
       {/* Link to Product Details */}
       <Link
-        to={`/dashboard/buyer/product/${product.id}`}
+        to={`/dashboard/buyer/product/${product?.id}`}
         className='block w-fit'
       >
         <div className='relative bg-black text-white rounded-lg overflow-hidden w-fit'>
           {/* Product Image */}
           <img
-            src={product.image}
-            alt={product.productName}
+            src={product?.image}
+            alt={product?.productName}
             className='w-[251px] h-[242px] object-cover'
           />
 
@@ -58,21 +59,23 @@ const ProductSkeleton: React.FC<ProductSkeletonProps> = ({ product }) => {
             {/* Seller Info */}
             <div className='flex items-center mb-2'>
               <img
-                src={product.storeAvatar}
-                alt={product.storeName}
+                src={product?.storeAvatar}
+                alt={product?.storeName}
                 className='w-8 h-8 rounded-full mr-2'
               />
-              <span className='text-sm text-gray-300'>{product.storeName}</span>
+              <span className='text-sm text-gray-300'>
+                {product?.storeName}
+              </span>
             </div>
 
             {/* Product Details */}
-            <h3 className='text-lg font-semibold'>{product.productName}</h3>
+            <h3 className='text-lg font-semibold'>{product?.productName}</h3>
             <p className='text-gray-400 text-sm'>
-              Sizes: {product.sizes.join(", ")}
+              Sizes: {product?.sizes.join(", ")}
             </p>
 
             {/* Price */}
-            <p className='text-lg font-bold mt-1'>{product.price} NGN</p>
+            <p className='text-lg font-bold mt-1'>{product?.price} NGN</p>
           </div>
         </div>
       </Link>
