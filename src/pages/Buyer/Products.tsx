@@ -1,8 +1,10 @@
 import FilterComponent from "@/modules/Buyer/features/filter/Filter";
+import { fetchProducts } from "@/modules/Buyer/features/product/productSlice";
 import { selectFilteredProducts } from "@/modules/Buyer/selectors";
+import { AppDispatch, RootState } from "@/store/store";
 import ProductSkeleton from "@/ui/ProductSkeleton";
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 interface Product {
   id: number;
@@ -16,7 +18,16 @@ interface Product {
 }
 
 const BuyerProductsPage = () => {
-  const products = useSelector((state: any) => state.buyer.products) || [];
+  const dispatch = useDispatch<AppDispatch>();
+  const products = useSelector(
+    (state: RootState) => state.buyer.product.products
+  );
+
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, [dispatch]);
+
+  console.log("Products from Redux:", products);
   const filteredProducts = useSelector(selectFilteredProducts) || [];
   const filters = useSelector((state: any) => state.buyer.filters) || {};
   const [filtersApplied, setFiltersApplied] = useState(false);
@@ -53,10 +64,11 @@ const BuyerProductsPage = () => {
           <p>No products match the selected filters.</p>
         )
       ) : (
+        // <h2>hello</h2>
         // Show all products only if no filters are applied
-        <div>
-          {products?.map((product: Product) => (
-            <ProductSkeleton key={product?.id} product={product} />
+        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-6'>
+          {products?.map((product: any) => (
+            <ProductSkeleton type='prod' key={product?.id} product={product} />
           ))}
         </div>
       )}
