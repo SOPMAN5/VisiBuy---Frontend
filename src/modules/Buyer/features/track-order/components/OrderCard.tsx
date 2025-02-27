@@ -15,11 +15,9 @@ interface OrderCardProps {
   order: Order;
 }
 
-
 const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
-  // Assuming that the Order Details route is:
-  // /dashboard/buyer/track-order/view/:orderId
-  const detailsUrl = `/dashboard/buyer/track-order/view/${order.id}`;
+  // Relative URL: "view/:orderId"
+  const detailsUrl = `view/${order.id}`;
 
   return (
     <Link to={detailsUrl} className="block">
