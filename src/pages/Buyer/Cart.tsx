@@ -17,14 +17,18 @@ const Cart: React.FC = () => {
         </div>
       ) : null}
       {cartItems.map((item) => (
-        <div key={item.id}>
-          <h3>{item.name}</h3>
+        <div
+          key={item.id}
+          className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-6'
+        >
+          <ProductSkeleton type='cart' product={item} />
+          {/* <h3>{item.name}</h3>
           <p>
             {item.price} NGN x {item.quantity}
           </p>
           <button onClick={() => dispatch(removeFromCart(item.id))}>
             Remove
-          </button>
+          </button> */}
         </div>
       ))}
     </div>

@@ -23,9 +23,11 @@ const initialState: ProductState = {
 // Fetch products from API
 export const fetchProducts = createAsyncThunk(
   "products/fetch",
-  async (_, { dispatch }) => {
+  async function (_, { dispatch }) {
     try {
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}list`);
+      // const response = await axios.get("https://fakestoreapi.com/products");
+      // console.log("res:", response);
       const data = response.data;
 
       // Extract min & max prices

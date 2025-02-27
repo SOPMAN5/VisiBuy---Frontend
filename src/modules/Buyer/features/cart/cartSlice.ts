@@ -8,6 +8,8 @@ interface CartItem {
   price: number;
   quantity: number;
   image?: string;
+  productName: any;
+  storeName: any;
 }
 
 interface CartState {
@@ -36,7 +38,7 @@ const cartSlice = createSlice({
       state.items = state.items.filter((item) => item.id !== action.payload);
     },
     clearCart: (state) => {
-      state.items = []; 
+      state.items = [];
     },
     updateQuantity: (
       state,
@@ -50,5 +52,6 @@ const cartSlice = createSlice({
   },
 });
 
-export const { addToCart, removeFromCart,clearCart, updateQuantity } = cartSlice.actions;
+export const { addToCart, removeFromCart, clearCart, updateQuantity } =
+  cartSlice.actions;
 export default cartSlice.reducer;

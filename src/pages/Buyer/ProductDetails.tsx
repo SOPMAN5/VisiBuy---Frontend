@@ -1,7 +1,8 @@
 import { addToCart } from "@/modules/Buyer/features/cart/cartSlice";
+import { RootState } from "@/store/store";
 import OrderSuccess from "@/ui/buyer/OrderSuccess";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
 interface Product {
@@ -22,11 +23,20 @@ interface Product {
 
 function ProductDetails() {
   const dispatch = useDispatch();
-  const [data, setData] = useState<Product | undefined>(undefined);
+  const products = useSelector(
+    (state: RootState) => state.buyer.product.products
+  );
+
+  const [data, setData] = useState<Partial<Product> | null>(null);
   const [count, setCount] = useState<number>(1);
   const { id } = useParams<{ id: string }>();
 
   const [showOrderSuccess, setShowOrderSuccess] = useState(false);
+  useEffect(() => {
+    // Find the product by matching the id with the `id` in the products array
+    const foundProduct = products.find((p) => p.id === Number(id)); // Assuming id is a string from the URL
+    setData(foundProduct ?? null); // Set the product or null if not found
+  }, [id, products]); // Re-run effect when id or products change
 
   const handleOrderSuccess = () => {
     if (!data) return;
