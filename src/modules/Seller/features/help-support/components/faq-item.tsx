@@ -22,7 +22,7 @@ export const FaqItem = ({ question, answer }: FaqProps) => {
          <Icon name="chevron-right" className="text-blue" />
         </motion.span>
       </button>
-      <AnimatePresence>
+      <AnimatePresence> 
         {isOpen && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
