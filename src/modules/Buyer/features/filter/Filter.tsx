@@ -147,7 +147,7 @@ const FilterComponent = ({
                   className='w-full'
                 />
                 <span className='block text-center'>
-                  Max Price: ${filters?.priceRange[1]}
+                  Max Price: #{filters?.priceRange[1]}
                 </span>
               </div>
             )}
