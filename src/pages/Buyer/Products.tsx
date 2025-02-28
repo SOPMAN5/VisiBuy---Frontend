@@ -7,13 +7,13 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 interface Product {
-  id: number;
+  id: string;
   image?: string;
   storeName: string;
   storeAvatar: string;
   productName: string;
-  sizes: number[];
-  color: string[];
+  size: number[];
+  color?: string[];
   price: number;
 }
 
@@ -53,8 +53,8 @@ const BuyerProductsPage = () => {
           <div>
             {filteredProducts.map((product) => (
               <div key={product?.id} className='product-card'>
-                <h3>{product?.name}</h3>
-                <p>Size: {product?.sizes.join(", ")}</p>
+                <h3>{product?.model}</h3>
+                <p>Size: {product.size.join(", ")}</p>
                 <p>Color: {product?.color.join(", ")}</p>
                 <p>Price: ${product?.price}</p>
               </div>
@@ -64,9 +64,8 @@ const BuyerProductsPage = () => {
           <p>No products match the selected filters.</p>
         )
       ) : (
-        // <h2>hello</h2>
         // Show all products only if no filters are applied
-        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-6'>
+        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6'>
           {products?.map((product: any) => (
             <ProductSkeleton type='prod' key={product?.id} product={product} />
           ))}
