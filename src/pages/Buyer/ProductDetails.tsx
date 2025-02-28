@@ -6,18 +6,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
 interface Product {
-  id: number;
+  id: string;
   brand: string;
   model: string;
   description: string;
   image: string;
   storeName: string;
   storeAvatar: string;
-  productName: string;
-  sizes: number[];
+  size?: number[];
   price: number;
-  color: string[];
-  name: string;
+  color?: string[];
   quantity: number;
 }
 
@@ -27,14 +25,14 @@ function ProductDetails() {
     (state: RootState) => state.buyer.product.products
   );
 
-  const [data, setData] = useState<Partial<Product> | null>(null);
+  const [data, setData] = useState<Product | null>(null);
   const [count, setCount] = useState<number>(1);
   const { id } = useParams<{ id: string }>();
 
   const [showOrderSuccess, setShowOrderSuccess] = useState(false);
   useEffect(() => {
     // Find the product by matching the id with the `id` in the products array
-    const foundProduct = products.find((p) => p.id === Number(id)); // Assuming id is a string from the URL
+    const foundProduct = products.find((p) => p.id === id); // Assuming id is a string from the URL
     setData(foundProduct ?? null); // Set the product or null if not found
   }, [id, products]); // Re-run effect when id or products change
 
@@ -43,6 +41,78 @@ function ProductDetails() {
     setShowOrderSuccess(true);
     dispatch(addToCart(data));
   };
+  /* 
+  1
+: 
+brand
+: 
+"Nike"
+color
+: 
+Array(1)
+0
+: 
+"yellow"
+length
+: 
+1
+[[Prototype]]
+: 
+Array(0)
+description
+: 
+"The Nike Dunk Low is a popular model known for its versatile design and comfortable fit. This colorway features a striking combination of yellow, black, and gray, making it stand out as a stylish option"
+images
+: 
+Array(0)
+length
+: 
+0
+[[Prototype]]
+: 
+Array(0)
+model
+: 
+"Nike Dunk Low"
+price
+: 
+115
+seller
+: 
+time
+: 
+"2024-11-07T11:11:15.978Z"
+user_id
+: 
+"672c9e3034132d7052ee1e35"
+[[Prototype]]
+: 
+Object
+size
+: 
+Array(1)
+0
+: 
+"32"
+length
+: 
+1
+[[Prototype]]
+: 
+Array(0)
+stock_status
+: 
+"in_stock"
+__v
+: 
+0
+_id
+: 
+"672ca05c4e08718f982d1ede"
+[[Prototype]]
+: 
+Object
+  */
 
   return (
     <div className='h-[100%] w-[90%] p-8'>

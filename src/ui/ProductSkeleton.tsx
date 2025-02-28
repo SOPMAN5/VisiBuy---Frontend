@@ -8,13 +8,13 @@ import { AppDispatch } from "@/store/store";
 import { useDispatch } from "react-redux";
 
 interface Product {
-  sizes: any;
-  id: number;
+  size?: any;
+  id: string;
   image?: string;
   storeName: string;
   storeAvatar?: string;
-  productName: string;
-  name: any;
+  model: string;
+  brand: string;
   // sizes: number[];
   // color: string[];
   price: number;
@@ -35,14 +35,14 @@ const ProductSkeleton: React.FC<ProductSkeletonProps> = ({ product, type }) => {
     dispatch(
       addToCart({
         id: product.id,
-        name: product.productName,
+        brand: product.brand,
         price: product.price,
         quantity: 1,
         image: product.image,
-        color: undefined,
-        sizes: undefined,
-        productName: undefined,
-        storeName: undefined,
+        color: product,
+        size: product,
+        model: product.model,
+        storeName: product,
       })
     );
   };
@@ -63,7 +63,7 @@ const ProductSkeleton: React.FC<ProductSkeletonProps> = ({ product, type }) => {
           {/* Product Image */}
           <img
             src={product?.image}
-            alt={product?.productName}
+            alt={product?.model}
             className='w-[251px] h-[242px] object-cover'
           />
 
@@ -85,7 +85,7 @@ const ProductSkeleton: React.FC<ProductSkeletonProps> = ({ product, type }) => {
             )}
 
             {/* Product Details */}
-            <h3 className='text-lg font-semibold'>{product?.productName}</h3>
+            <h3 className='text-lg font-semibold'>{product?.model}</h3>
             {/* <p className='text-gray-400 text-sm'>
               Sizes: {product?.sizes.join(", ")}
             </p> */}
