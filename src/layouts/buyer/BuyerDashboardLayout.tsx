@@ -7,37 +7,47 @@ import LoadingSpinner from "@/ui/LoadingSpinner";
 
 const BuyerDashboardLayout = () => {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const [loading, setLoading] = useState(true); // Loading state
-  const location = useLocation(); // Detects route changes
+  const [loading, setLoading] = useState(true); // For main content
+  const location = useLocation(); // Detect route changes
 
   useEffect(() => {
-    // Show spinner on route change
+    // Simulate loading on each route change
     setLoading(true);
-    const timer = setTimeout(() => setLoading(false), 1500); // Simulated loading delay
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1500);
     return () => clearTimeout(timer);
-  }, [location.pathname]); // Runs when route changes
+  }, [location.pathname]);
 
   return (
     <div className="flex h-screen relative">
-      {loading && (
-        <div className="absolute inset-0 flex items-center justify-center z-50">
-          <LoadingSpinner isLoading={loading} size="large" />
-        </div>
-      )}
-
+      {/* Sidebar (Visible Immediately) */}
       <SideBar />
 
+      {/* Main Layout */}
       <div className="flex flex-col flex-1">
+        {/* Header (Visible Immediately) */}
         <HeaderBar
           onMenuClick={() => setIsMobileOpen(true)}
           isSidebarOpen={isMobileOpen}
           setIsSidebarOpen={setIsMobileOpen}
         />
-        <main className="p-4">
-          <Outlet />
+
+        {/* Main Content Area */}
+        <main className="p-4 h-full">
+          {loading ? (
+            // Spinner only in main content area
+            <div className="flex items-center justify-center h-full">
+              <LoadingSpinner isLoading={true} size="large" />
+            </div>
+          ) : (
+            // Render child routes when loading finishes
+            <Outlet />
+          )}
         </main>
       </div>
 
+      {/* Mobile Sidebar */}
       <MobileSideBar
         isOpen={isMobileOpen}
         onClose={() => setIsMobileOpen(false)}
