@@ -16,23 +16,37 @@ const VisualVerificationModal: React.FC<VisualVerificationModalProps> = ({
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30 z-50">
-      <div className="bg-white p-6 rounded-md shadow-lg w-full max-w-lg space-y-4">
+      <div className="bg-white px-24 py-28 rounded-md shadow-lg w-full max-w-7xl space-y-4">
         {/* Pop-up Header with chevron left */}
         <div className="flex items-center gap-3 mb-2">
           <ChevronLeft
-            className="w-5 h-5 text-gray-600 cursor-pointer"
+            className=" text-black cursor-pointer w-8 h-8"
             onClick={onClose}
           />
-          <h2 className="text-lg font-semibold">Visual Verification</h2>
+          <h2 className="text-2xl tracking-wide font-Montserrat font-bold">
+            Visual Verification
+          </h2>
         </div>
 
         {/* Product name */}
-        <select className="border border-gray-300 rounded-md px-3 py-2 w-full focus:outline-none focus:border-blue-500">
-          <option>Newest Versace Sneakers Collections (43,49,52)</option>
+        <select className="border border-gray-300 font-bold font-Montserrat text-base rounded-md px-3 py-2 w-full focus:outline-none focus:border-blue-500">
+          <option className="font-bold font-Montserrat text-base">
+            Newest Versace Sneakers Collections (43,49,52)
+          </option>
         </select>
 
         {/* Product images row */}
         <div className="flex gap-2 overflow-x-auto">
+          <img
+            src="https://via.placeholder.com/120"
+            alt="product-1"
+            className="w-24 h-24 object-cover rounded-md"
+          />
+          <img
+            src="https://via.placeholder.com/120"
+            alt="product-1"
+            className="w-24 h-24 object-cover rounded-md"
+          />
           <img
             src="https://via.placeholder.com/120"
             alt="product-1"
@@ -51,7 +65,7 @@ const VisualVerificationModal: React.FC<VisualVerificationModalProps> = ({
         </div>
 
         {/* Verification question */}
-        <p className="text-sm font-semibold text-gray-700">
+        <p className="text-xl font-Montserrat  text-gray-600">
           Does this product match your order?
         </p>
 
@@ -59,13 +73,13 @@ const VisualVerificationModal: React.FC<VisualVerificationModalProps> = ({
         <div className="flex items-center justify-end gap-4">
           <button
             onClick={onClose}
-            className="border border-gray-300 text-gray-600 px-4 py-2 rounded-md hover:bg-gray-100"
+            className="border border-black text-gray-600 px-20 py-3 rounded-md hover:bg-gray-100"
           >
             No
           </button>
           <button
             onClick={onYes}
-            className="bg-blue-600 text-white px-4 py-2 rounded-md font-semibold hover:bg-blue-700"
+            className="bg-green-600 text-white px-20 py-3 rounded-md font-semibold hover:bg-green-700"
           >
             Yes
           </button>
