@@ -9,7 +9,7 @@ import { useDispatch } from "react-redux";
 
 interface Product {
   size?: any;
-  id: string;
+  _id: string;
   image?: string;
   storeName: string;
   storeAvatar?: string;
@@ -34,13 +34,13 @@ const ProductSkeleton: React.FC<ProductSkeletonProps> = ({ product, type }) => {
 
     dispatch(
       addToCart({
-        id: product.id,
+        _id: product._id,
         brand: product.brand,
         price: product.price,
         quantity: 1,
         image: product.image,
-        color: product,
-        size: product,
+        // color: product,
+        // size: product,
         model: product.model,
         storeName: product,
       })
@@ -49,14 +49,14 @@ const ProductSkeleton: React.FC<ProductSkeletonProps> = ({ product, type }) => {
   const handleRemoveFromCart = (e: React.MouseEvent) => {
     e.preventDefault();
 
-    dispatch(removeFromCart(product?.id));
+    dispatch(removeFromCart(product?._id));
   };
 
   return (
     <div className='relative w-fit'>
       {/* Link to Product Details */}
       <Link
-        to={`/dashboard/buyer/product/${product?.id}`}
+        to={`/dashboard/buyer/product/${product?._id}`}
         className='block w-fit'
       >
         <div className='relative bg-black text-white rounded-lg overflow-hidden w-fit'>
