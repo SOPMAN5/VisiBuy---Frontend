@@ -1,11 +1,9 @@
 import ProductSkeleton from "@/ui/ProductSkeleton";
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { removeFromCart } from "@/modules/Buyer/features/cart/cartSlice";
+import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 
 const Cart: React.FC = () => {
-  const dispatch = useDispatch();
   const cartItems = useSelector((state: RootState) => state.buyer.cart.items);
 
   return (
@@ -18,15 +16,8 @@ const Cart: React.FC = () => {
           </div>
         ) : null}
         {cartItems.map((item) => (
-          <div key={item.id}>
+          <div key={item._id}>
             <ProductSkeleton type='cart' product={item} />
-            {/* <h3>{item.name}</h3>
-          <p>
-            {item.price} NGN x {item.quantity}
-          </p>
-          <button onClick={() => dispatch(removeFromCart(item.id))}>
-            Remove
-          </button> */}
           </div>
         ))}
       </div>

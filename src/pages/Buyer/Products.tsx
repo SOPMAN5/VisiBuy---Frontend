@@ -52,7 +52,7 @@ const BuyerProductsPage = () => {
         filteredProducts.length > 0 ? (
           <div>
             {filteredProducts.map((product) => (
-              <div key={product?.id} className='product-card'>
+              <div key={product?._id} className='product-card'>
                 <h3>{product?.model}</h3>
                 <p>Size: {product.size.join(", ")}</p>
                 <p>Color: {product?.color.join(", ")}</p>
@@ -67,7 +67,7 @@ const BuyerProductsPage = () => {
         // Show all products only if no filters are applied
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6'>
           {products?.map((product: any) => (
-            <ProductSkeleton type='prod' key={product?.id} product={product} />
+            <ProductSkeleton type='prod' key={product?._id} product={product} />
           ))}
         </div>
       )}

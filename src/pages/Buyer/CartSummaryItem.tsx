@@ -7,7 +7,7 @@ import {
 
 interface CartSummaryItemProps {
   item: {
-    id: number;
+    _id: string;
     image?: string;
     name: string;
     color: string[];
@@ -21,7 +21,7 @@ const CartSummaryItem: React.FC<CartSummaryItemProps> = ({ item }) => {
   const dispatch = useDispatch();
 
   return (
-    <div key={item.id} className='flex items-center gap-4 border-b pb-4'>
+    <div key={item._id} className='flex items-center gap-4 border-b pb-4'>
       <img
         src={item.image}
         alt={item.name}
@@ -39,7 +39,7 @@ const CartSummaryItem: React.FC<CartSummaryItemProps> = ({ item }) => {
           <button
             onClick={() =>
               dispatch(
-                updateQuantity({ id: item.id, quantity: item.quantity - 1 })
+                updateQuantity({ id: item._id, quantity: item.quantity - 1 })
               )
             }
             className='p-1 border rounded-md'
@@ -50,7 +50,7 @@ const CartSummaryItem: React.FC<CartSummaryItemProps> = ({ item }) => {
           <button
             onClick={() =>
               dispatch(
-                updateQuantity({ id: item.id, quantity: item.quantity + 1 })
+                updateQuantity({ id: item._id, quantity: item.quantity + 1 })
               )
             }
             className='p-1 border rounded-md'
@@ -62,7 +62,7 @@ const CartSummaryItem: React.FC<CartSummaryItemProps> = ({ item }) => {
       <div className='flex flex-col items-end'>
         <p className='font-semibold'>#{item.price * item.quantity}</p>
         <button
-          onClick={() => dispatch(removeFromCart(item.id))}
+          onClick={() => dispatch(removeFromCart(item._id))}
           className='text-red-500 text-xs flex items-center gap-1'
         >
           <Trash2 size={14} /> Remove
