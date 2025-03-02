@@ -126,13 +126,13 @@ const BuyerTrackOrderPage: React.FC = () => {
           </div>
 
           {/* Row 2: OrderCards + PurchasingHistory */}
-          <div className="flex gap-12">
+          <div className="flex gap-24">
             <div className="flex-1 flex flex-col gap-4">
               {filteredOrders.map((order) => (
                 <OrderCard key={order.id} order={order} />
               ))}
             </div>
-            <div className="w-64 hidden lg:block">
+            <div className="w-96 hidden lg:block">
               <PurchasingHistory />
             </div>
           </div>
