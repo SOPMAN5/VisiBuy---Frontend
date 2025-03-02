@@ -1,13 +1,20 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { setPriceRange } from "../filter/filterSlice";
 import axios from "axios";
+import { RootState } from "@/store/store";
 
 interface Product {
-  sizes: number[];
+  size: number[];
   color: string[];
-  id: number;
-  name: string;
+  _id: string;
+  brand: string;
   price: number;
+  model: string;
+  description: string;
+  storeName: string;
+  storeAvatar: string;
+  image: string;
+  quantity: number;
 }
 
 interface ProductState {
@@ -23,10 +30,17 @@ const initialState: ProductState = {
 // Fetch products from API
 export const fetchProducts = createAsyncThunk(
   "products/fetch",
-  async (_, { dispatch }) => {
+  async (_, { dispatch, getState }) => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}list`);
-      const data = response.data;
+      const { token } = (getState() as RootState).auth;
+      console.log(token);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}list`,
+        { headers: { "auth-token": token } }
+      );
+      // const response = await axios.get("https://fakestoreapi.com/products");
+      // console.log("res:", response);
+      const data = response.data.sneakers;
 
       // Extract min & max prices
       const prices = data.map((p: any) => p.price);

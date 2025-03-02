@@ -15,18 +15,16 @@ interface OrderCardProps {
   order: Order;
 }
 
-
 const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
-  // Assuming that the Order Details route is:
-  // /dashboard/buyer/track-order/view/:orderId
-  const detailsUrl = `/dashboard/buyer/track-order/view/${order.id}`;
+  // Relative URL: "view/:orderId"
+  const detailsUrl = `view/${order.id}`;
 
   return (
     <Link to={detailsUrl} className="block">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white shadow-md p-6 rounded-md hover:bg-gray-50 transition-colors">
         <div>
-          <h2 className="font-semibold text-gray-800">
-            Order #{order.id} — {order.title}
+          <h2 className="font-bold text-gray-800">
+            Order #{order.id}
           </h2>
           <p className="text-sm text-gray-600 mt-1">{order.description}</p>
         </div>
