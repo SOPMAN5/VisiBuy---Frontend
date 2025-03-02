@@ -9,9 +9,9 @@ interface CartSummaryItemProps {
   item: {
     _id: string;
     image?: string;
-    name: string;
-    color: string[];
-    sizes: number[];
+    model: string;
+    color?: string[];
+    sizes?: number[];
     quantity: number;
     price: number;
   };
@@ -24,17 +24,17 @@ const CartSummaryItem: React.FC<CartSummaryItemProps> = ({ item }) => {
     <div key={item._id} className='flex items-center gap-4 border-b pb-4'>
       <img
         src={item.image}
-        alt={item.name}
+        alt={item.model}
         className='w-16 h-16 md:w-20 md:h-20 rounded-lg object-cover'
       />
       <div className='flex-1'>
-        <h3 className='font-semibold text-sm md:text-base'>{item.name}</h3>
-        <p className='text-gray-500 text-xs md:text-sm'>
-          {item.color.join(", ")}
+        <h3 className='font-semibold text-sm md:text-base'>{item.model}</h3>
+        {/* <p className='text-gray-500 text-xs md:text-sm'>
+          {item?.color.join(", ")}
         </p>
         <p className='text-gray-500 text-xs md:text-sm'>
           Size: {item.sizes.join(", ")}
-        </p>
+        </p> */}
         <div className='flex items-center mt-2'>
           <button
             onClick={() =>
