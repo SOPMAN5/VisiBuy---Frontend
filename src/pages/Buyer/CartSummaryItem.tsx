@@ -7,11 +7,11 @@ import {
 
 interface CartSummaryItemProps {
   item: {
-    id: number;
+    _id: string;
     image?: string;
-    name: string;
-    color: string[];
-    sizes: number[];
+    model: string;
+    color?: string[];
+    sizes?: number[];
     quantity: number;
     price: number;
   };
@@ -21,25 +21,25 @@ const CartSummaryItem: React.FC<CartSummaryItemProps> = ({ item }) => {
   const dispatch = useDispatch();
 
   return (
-    <div key={item.id} className='flex items-center gap-4 border-b pb-4'>
+    <div key={item._id} className='flex items-center gap-4 border-b pb-4'>
       <img
         src={item.image}
-        alt={item.name}
+        alt={item.model}
         className='w-16 h-16 md:w-20 md:h-20 rounded-lg object-cover'
       />
       <div className='flex-1'>
-        <h3 className='font-semibold text-sm md:text-base'>{item.name}</h3>
-        <p className='text-gray-500 text-xs md:text-sm'>
-          {item.color.join(", ")}
+        <h3 className='font-semibold text-sm md:text-base'>{item.model}</h3>
+        {/* <p className='text-gray-500 text-xs md:text-sm'>
+          {item?.color.join(", ")}
         </p>
         <p className='text-gray-500 text-xs md:text-sm'>
           Size: {item.sizes.join(", ")}
-        </p>
+        </p> */}
         <div className='flex items-center mt-2'>
           <button
             onClick={() =>
               dispatch(
-                updateQuantity({ id: item.id, quantity: item.quantity - 1 })
+                updateQuantity({ id: item._id, quantity: item.quantity - 1 })
               )
             }
             className='p-1 border rounded-md'
@@ -50,7 +50,7 @@ const CartSummaryItem: React.FC<CartSummaryItemProps> = ({ item }) => {
           <button
             onClick={() =>
               dispatch(
-                updateQuantity({ id: item.id, quantity: item.quantity + 1 })
+                updateQuantity({ id: item._id, quantity: item.quantity + 1 })
               )
             }
             className='p-1 border rounded-md'
@@ -62,7 +62,7 @@ const CartSummaryItem: React.FC<CartSummaryItemProps> = ({ item }) => {
       <div className='flex flex-col items-end'>
         <p className='font-semibold'>#{item.price * item.quantity}</p>
         <button
-          onClick={() => dispatch(removeFromCart(item.id))}
+          onClick={() => dispatch(removeFromCart(item._id))}
           className='text-red-500 text-xs flex items-center gap-1'
         >
           <Trash2 size={14} /> Remove

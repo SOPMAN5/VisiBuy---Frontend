@@ -6,7 +6,7 @@ import { RootState } from "@/store/store";
 interface Product {
   size: number[];
   color: string[];
-  id: string;
+  _id: string;
   brand: string;
   price: number;
   model: string;
