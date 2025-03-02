@@ -1,15 +1,39 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { HiArrowLeft } from "react-icons/hi";
 import ViewAll from "../../modules/Buyer/features/track-order/components/ViewAll";
 import VerifyButton from "../../modules/Buyer/features/track-order/components/VerifyButton";
 import VisualVerificationModal from "../../modules/Buyer/features/track-order/components/VisualVerificationModal";
 import FeedbackModal from "../../modules/Buyer/features/track-order/components/FeedbackModal";
+import {
+  fetchOrderStatus,
+  verifyOrder,
+} from "@/modules/Buyer/lib/track-order/api";
+
+
+interface OrderStatusData {
+  buyer: { fullName: string };
+  seller: { name: string };
+  created_at: string;
+  invoiceID: string;
+  product: {
+    name: string;
+    quantity: number;
+    price: string;
+  };
+}
 
 const BuyerOrderDetailsPage: React.FC = () => {
   const { orderId } = useParams();
   const navigate = useNavigate();
+  const token = localStorage.getItem("auth-token") || "";
 
+  // State for dynamic order details fetched from the API
+  const [orderDetails, setOrderDetails] = useState<OrderStatusData | null>(
+    null
+  );
+
+  // Verification states
   const [verificationStatus, setVerificationStatus] = useState<
     "awaiting" | "verified"
   >("awaiting");
@@ -18,12 +42,40 @@ const BuyerOrderDetailsPage: React.FC = () => {
   const [showVerificationModal, setShowVerificationModal] = useState(false);
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
 
-  const handleVerifyClick = () => {
-    setIsVerifying(true);
-    setTimeout(() => {
+  // Fetch order status details dynamically from the API
+  useEffect(() => {
+    if (orderId) {
+      fetchOrderStatus(orderId, token)
+        .then((data) => {
+          setOrderDetails(data);
+          // Optionally update verificationStatus based on fetched data
+          // e.g., setVerificationStatus(data.verificationStatus);
+        })
+        .catch((err) => console.error(err));
+    }
+  }, [orderId, token]);
+
+  // Compute a delivery date 3 days after verification (if verified)
+  const getDeliveryDate = () => {
+    const deliveryDate = new Date();
+    deliveryDate.setDate(deliveryDate.getDate() + 3);
+    return deliveryDate.toLocaleDateString();
+  };
+
+  const handleVerifyClick = async () => {
+    if (!orderId) return;
+    try {
+      setIsVerifying(true);
+      // Call the verifyOrder API; using "verified" status
+      await verifyOrder(orderId, "verified", token);
+      setVerificationStatus("verified");
+      setIsButtonVerified(true);
+      setShowFeedbackModal(true);
+    } catch (error) {
+      console.error("Verification failed:", error);
+    } finally {
       setIsVerifying(false);
-      setShowVerificationModal(true);
-    }, 1000);
+    }
   };
 
   const handleVerificationNo = () => {
@@ -39,7 +91,7 @@ const BuyerOrderDetailsPage: React.FC = () => {
 
   return (
     <div className="relative p-4 md:p-4">
-      {/* Header: Back Button + Order ID + Status */}
+      {/* Header: Back Button + Order ID + Verification Status */}
       <div className="flex items-center justify-between mb-6 rounded-md max-w-6xl">
         <div className="flex items-center gap-3">
           <HiArrowLeft
@@ -70,34 +122,36 @@ const BuyerOrderDetailsPage: React.FC = () => {
         <div className="flex-1 bg-white p-4 space-y-4">
           {/* Order Information */}
           <div className="p-4">
-            <div className="grid grid-cols-2 text-sm text-gray-600">
-              <div className="space-y-2 font-semibold">
-                <p>Buyer:</p>
-                <p>Seller:</p>
-                <p>Date & Time of Purchase:</p>
-                <p>Transaction ID:</p>
-                <p>Session ID:</p>
+            {orderDetails ? (
+              <div className="grid grid-cols-2 text-sm text-gray-600">
+                <div className="space-y-2 font-semibold">
+                  <p>Buyer:</p>
+                  <p>Seller:</p>
+                  <p>Date & Time of Purchase:</p>
+                  <p>Invoice ID:</p>
+                </div>
+                <div className="space-y-2 text-right">
+                  <p>{orderDetails.buyer.fullName}</p>
+                  <p>{orderDetails.seller.name}</p>
+                  <p>{orderDetails.created_at}</p>
+                  <p>{orderDetails.invoiceID}</p>
+                </div>
               </div>
-              <div className="space-y-2 text-right">
-                <p>Chinaza Emmanuel</p>
-                <p>Chukwudi Stores</p>
-                <p>14:32, Jan 24, 2025</p>
-                <p>B9g9h8j5bjg</p>
-                <p>8S9H3Spk9Hgh4hd</p>
-              </div>
-            </div>
+            ) : (
+              <p>Loading order details...</p>
+            )}
           </div>
 
-          {/* Items */}
+          {/* Items Section: Dynamic Product Details */}
           <div className="p-4">
-            <div className="flex justify-between text-sm font-semibold text-gray-700 p-2 border-t border-gray-300">
-              <p>1x Newest Versace Sneakers (#39,952)</p>
-              <p>#14,000</p>
-            </div>
-            <div className="flex justify-between text-sm font-semibold text-gray-700 p-2 border-y border-gray-300">
-              <p>1x Newest Versace Sneakers (#39,952)</p>
-              <p>#14,000</p>
-            </div>
+            {orderDetails ? (
+              <div className="flex justify-between text-sm font-semibold text-gray-700 p-2 border-t border-gray-300">
+                <p>
+                  {orderDetails.product.quantity}x {orderDetails.product.name}
+                </p>
+                <p>#{orderDetails.product.price}</p>
+              </div>
+            ) : null}
           </div>
 
           {/* Verify Order */}
@@ -112,25 +166,26 @@ const BuyerOrderDetailsPage: React.FC = () => {
             />
           </div>
 
-          {/* Delivery Info */}
-          <div className="p-4 space-y-2">
-            {/* Row 1: Delivery Left, Estimated Right */}
-            <div className="flex items-center justify-between text-sm text-gray-600">
-              <span className="font-semibold text-black">
-                50 mins left to delivery
-              </span>
-              <span className="text-gray-500">(Estimated: Jan 7, 1:30 PM)</span>
+          {/* Delivery Info: Display only if verification is accepted */}
+          {verificationStatus === "verified" && (
+            <div className="p-4 space-y-2 border-t border-gray-300">
+              <div className="flex items-center justify-between text-sm text-gray-600">
+                <span className="font-semibold text-black">Delivery Date:</span>
+                <span className="text-gray-500">{getDeliveryDate()}</span>
+              </div>
             </div>
+          )}
 
-            {/* Row 2: Assign Rider on the Right */}
+          {/* Additional Actions: Assign Rider & Customer Care */}
+          <div className="p-4 space-y-2">
+            {/* Assign Rider */}
             <div className="flex justify-end">
               <button className="text-sm hover:underline">
                 + Assign to new rider
               </button>
             </div>
-
-            {/* Row 3: Issues on the Left, Customer Care on the Right */}
-            <div className="flex items-center justify-between text-sm ">
+            {/* Customer Care */}
+            <div className="flex items-center justify-between text-sm">
               <span>Experiencing issues with this order? Reach out to our</span>
               <button className="text-blue-600 font-semibold hover:underline">
                 Customer Care
@@ -148,6 +203,8 @@ const BuyerOrderDetailsPage: React.FC = () => {
       {/* Modals */}
       <VisualVerificationModal
         isOpen={showVerificationModal}
+        orderId={orderId || ""}
+        token={token}
         onClose={handleVerificationNo}
         onYes={handleVerificationYes}
       />
