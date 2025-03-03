@@ -8,6 +8,7 @@ export const PrivateRoute = ({children}:Readonly<{children:React.ReactNode}>) =>
 
   if (!isAuthenticated) {
     // Save the attempted route
+    
     localStorage.setItem('redirectPath', location.pathname + location.search);
     return <Navigate to="/login" />;
   }

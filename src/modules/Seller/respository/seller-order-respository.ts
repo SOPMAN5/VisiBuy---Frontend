@@ -13,4 +13,5 @@ export interface ISellerOrderRepository {
   updateOrderStatus: (
     payload: TUpdateSellerOrderStaus
   ) => Promise<ISellerOrder>;
+
 }

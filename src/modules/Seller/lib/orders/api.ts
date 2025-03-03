@@ -39,6 +39,7 @@ class SellerOrderApiAdapter implements ISellerOrderRepository {
       ...response.data,
     };
   }
+  
 }
 
 export default new SellerOrderApiAdapter();
