@@ -118,14 +118,7 @@ const router = createHashRouter([
       { index: true, element: <BuyerHomePage /> },
       { path: "analytics", element: <BuyerDashboardPage /> },
       { path: "purchases", element: <BuyerProductsPage /> },
-      { path: "product/:id", element: <BuyerProductDetails /> },
-      {
-        path: "track-order",
-        element: <BuyerTrackOrderPage />,
-        children: [
-          { path: "view/:orderId", element: <BuyerOrderDetailsPage /> }, 
-        ],
-      },
+      { path: "track-order", element: <BuyerTrackOrderPage /> },
       { path: "carts", element: <BuyerCartPage /> },
       { path: "notification", element: <BuyerNotificationsPage /> },
       { path: "profile", element: <BuyerProfilePage /> },
