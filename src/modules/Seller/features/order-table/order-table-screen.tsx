@@ -1,4 +1,4 @@
-import { MainLayout } from "@/layouts/main-layout";
+import { MainLayout } from "../../../../layouts/main-layout";
 import { OrderSummaryCard } from "../../../Orders/features/components/order-summary-card";
 import { SellerOrderTable } from "./order-table";
 import {
@@ -10,15 +10,15 @@ import { ISellerOrder, ISellerOrderQueryParams } from "../../models/orders";
 import { columns } from "./column-def";
 import { ITabs, OrderTabs } from "./order-tabs";
 import { Link, Outlet, useMatch, useParams } from "react-router-dom";
-import { dashboardConfig } from "@/lib/config";
-import Icon from "@/ui/Icon";
+import { dashboardConfig } from "../../../../lib/config";
+import Icon from "../../../../ui/Icon";
 import { useGetSellerOrdersQuery } from "../../queries/order/queries";
-import { Pagination } from "@/common/components/pagination";
+import { Pagination } from "../../../../common/components/pagination";
 import { useMemo, useState } from "react";
 import { SellerOrderQueryBuilder } from "../../lib/orders/order-query-builder";
-import { OverlaySpinner } from "@/common/components/modal-spinner";
-import { RootState } from "@/store/store";
-import { useAppSelector } from "@/hooks/app-hooks";
+import { OverlaySpinner } from "../../../../common/components/modal-spinner";
+import { RootState } from "../../../../store/store";
+import { useAppSelector } from "../../../../hooks/app-hooks";
 const orders: ISellerOrder[] = [
   {
     id: "1",
@@ -75,32 +75,32 @@ export function SellerOrderScreen() {
     <>
       {match ? (
         <div>
-          <MainLayout title="Order Management">
-            <div className="grid grid-cols-5 gap-x-4">
+          <MainLayout title='Order Management'>
+            <div className='grid grid-cols-5 gap-x-4'>
               <OrderSummaryCard figure={data?.data.total_orders} />
               <OrderSummaryCard
-                title="Pending"
-                legendColor="bg-blue"
+                title='Pending'
+                legendColor='bg-blue'
                 figure={data?.data.sellerOrderSummary.pending}
               />
               <OrderSummaryCard
-                title="Accepted"
+                title='Accepted'
                 figure={data?.data.sellerOrderSummary.accepted}
-                legendColor="bg-[#FFA600]"
+                legendColor='bg-[#FFA600]'
               />
               <OrderSummaryCard
-                title="Dispatched"
+                title='Dispatched'
                 figure={data?.data.sellerOrderSummary.dispatched}
-                legendColor="bg-[#FF6200]"
+                legendColor='bg-[#FF6200]'
               />
               <OrderSummaryCard
-                title="Delivered"
-                legendColor="bg-primary"
+                title='Delivered'
+                legendColor='bg-primary'
                 figure={data?.data.sellerOrderSummary.delivered}
               />
             </div>
             <OrderTabs tabs={tabs} table={table} />
-            <div className="relative">
+            <div className='relative'>
               <SellerOrderTable table={table} />
               <OverlaySpinner open={isFetching || root.isLoading} />
             </div>
@@ -116,10 +116,10 @@ export function SellerOrderScreen() {
       ) : (
         <MainLayout
           title={
-            <div className="flex gap-x-4 items-center">
-              <Link to="" className="bg-light-gray px-4 py-2 ">
+            <div className='flex gap-x-4 items-center'>
+              <Link to='' className='bg-light-gray px-4 py-2 '>
                 {" "}
-                <Icon name="move-left" width={20} />
+                <Icon name='move-left' width={20} />
               </Link>
 
               {`Order details (#${orderId})`}

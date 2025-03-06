@@ -1,6 +1,5 @@
-
-import { TOrderStatus } from "@/types/status";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui/Tabs";
+import { TOrderStatus } from "../../../../types/status";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../../ui/Tabs";
 import { Table } from "@tanstack/react-table";
 import { useCallback } from "react";
 import { ISellerOrder } from "../../models/orders";
@@ -26,14 +25,14 @@ export function OrderTabs({
   }, []);
 
   return (
-    <div className="py-12 w-full">
-      <Tabs defaultValue="all_orders" className="">
-        <TabsList className="flex justify-between">
+    <div className='py-12 w-full'>
+      <Tabs defaultValue='all_orders' className=''>
+        <TabsList className='flex justify-between'>
           {tabs.map(({ title, value }) =>
             value === "all_orders" ? (
               <TabsTrigger
-               key={value}
-                className="flex justify-center text-center font-OpenSans font-medium text-xl w-full"
+                key={value}
+                className='flex justify-center text-center font-OpenSans font-medium text-xl w-full'
                 value={value}
                 onClick={handleResetFilters}
                 data-value={value}
@@ -42,8 +41,8 @@ export function OrderTabs({
               </TabsTrigger>
             ) : (
               <TabsTrigger
-              key={value}
-                className="flex justify-center text-center font-OpenSans font-medium text-xl w-full"
+                key={value}
+                className='flex justify-center text-center font-OpenSans font-medium text-xl w-full'
                 value={value}
                 onClick={handleSetFilter}
                 data-value={value}

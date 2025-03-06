@@ -1,7 +1,7 @@
-import { TOrderStatus } from "@/types/status";
+import { TOrderStatus } from "../../../../types/status";
 import { ISellerOrder } from "../../models/orders";
 import { getSalesSummary } from "./utils";
-import { formatDate } from "@/lib/utils";
+import { formatDate } from "../../../../lib/utils";
 
 export const transformSellerOrder = (
   data: any

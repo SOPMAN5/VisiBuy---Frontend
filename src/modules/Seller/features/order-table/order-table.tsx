@@ -1,4 +1,4 @@
-import Icon from "@/ui/Icon";
+import Icon from "../../../../ui/Icon";
 import {
   Table,
   TableBody,
@@ -7,7 +7,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/ui/Table";
+} from "../../../../ui/Table";
 import { flexRender, Table as ITable } from "@tanstack/react-table";
 import { ColumnDef } from "@tanstack/react-table";
 import { columns } from "./column-def";
@@ -28,12 +28,12 @@ interface DataTableProps<TData, TValue> {
 export function SellerOrderTable<TData, TValue>({ table }: { table: any }) {
   return (
     <Table>
-      <TableHeader className="bg-blue-200 font-OpenSans font-medium text-xl text-center">
+      <TableHeader className='bg-blue-200 font-OpenSans font-medium text-xl text-center'>
         {table
           .getHeaderGroups()
           .map(
             (headerGroup: { id: Key | null | undefined; headers: any[] }) => (
-              <TableRow className="text-center" key={headerGroup.id}>
+              <TableRow className='text-center' key={headerGroup.id}>
                 {headerGroup.headers.map(
                   (header: {
                     id: Key | null | undefined;
@@ -58,7 +58,7 @@ export function SellerOrderTable<TData, TValue>({ table }: { table: any }) {
                     getContext: () => any;
                   }) => {
                     return (
-                      <TableHead className=" py-6" key={header.id}>
+                      <TableHead className=' py-6' key={header.id}>
                         {header.isPlaceholder
                           ? null
                           : flexRender(
@@ -84,7 +84,7 @@ export function SellerOrderTable<TData, TValue>({ table }: { table: any }) {
                 getVisibleCells: () => any[];
               }) => (
                 <TableRow
-                  className="text-lg font-medium font-OpenSans text-center"
+                  className='text-lg font-medium font-OpenSans text-center'
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                 >
@@ -110,7 +110,7 @@ export function SellerOrderTable<TData, TValue>({ table }: { table: any }) {
                       };
                       getContext: () => any;
                     }) => (
-                      <TableCell className="font-medium" key={cell.id}>
+                      <TableCell className='font-medium' key={cell.id}>
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()
@@ -123,13 +123,13 @@ export function SellerOrderTable<TData, TValue>({ table }: { table: any }) {
             )
         ) : (
           <TableRow>
-            <TableCell colSpan={columns.length} className="h-24 text-center">
-              <div className="flex flex-col min-h-screen justify-center items-center ">
-                <img src="/product-inactive.png" alt="No active product" />
-                <h2 className="text-4xl font-Montserrat font-medium">
+            <TableCell colSpan={columns.length} className='h-24 text-center'>
+              <div className='flex flex-col min-h-screen justify-center items-center '>
+                <img src='/product-inactive.png' alt='No active product' />
+                <h2 className='text-4xl font-Montserrat font-medium'>
                   Your orders will show here.
                 </h2>
-                <p className="text-2xl font-OpenSans my-6">
+                <p className='text-2xl font-OpenSans my-6'>
                   This is where you’ll fulfill orders, collect payment and track
                   order progress.
                 </p>
