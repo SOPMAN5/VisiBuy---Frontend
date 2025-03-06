@@ -1,4 +1,4 @@
-import { TOrderStatus } from "@/types/status";
+import { TOrderStatus } from "../../../../types/status";
 import { Row } from "@tanstack/react-table";
 import { ISellerOrder } from "../../models/orders";
 

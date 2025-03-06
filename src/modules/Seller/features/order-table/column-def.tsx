@@ -1,6 +1,6 @@
-import OrderSelectStatus  from "@/common/components/status-selector";
-import { currencyFormmater, formatDate } from "@/lib/utils";
-import Icon from "@/ui/Icon";
+import OrderSelectStatus from "../../../../common/components/status-selector";
+import { currencyFormmater, formatDate } from "../../../../lib/utils";
+import Icon from "../../../../ui/Icon";
 import { ColumnDef, Row } from "@tanstack/react-table";
 import { Link } from "react-router-dom";
 import { ISellerOrder } from "../../models/orders";
@@ -22,10 +22,10 @@ export const columns: ColumnDef<ISellerOrder>[] = [
     header: "Product Name",
     cell: ({ row }) => {
       return (
-        <div className="flex justify-center">
+        <div className='flex justify-center'>
           {" "}
           <img
-            className="aspect-square border border-light-gray rounded-md mr-3"
+            className='aspect-square border border-light-gray rounded-md mr-3'
             width={20}
             src={row.getValue("img_url")}
           />
@@ -65,12 +65,15 @@ export const columns: ColumnDef<ISellerOrder>[] = [
     header: "Status",
     cell: ({ row }) => {
       return (
-        <div className="flex items-center justify-center">
-          <OrderSelectStatus status={row.getValue("status")} id={row.getValue("id")} />
+        <div className='flex items-center justify-center'>
+          <OrderSelectStatus
+            status={row.getValue("status")}
+            id={row.getValue("id")}
+          />
           <Link to={`view/${row.getValue("id")}`}>
             <Icon
-              name="ellipsis-vertical"
-              className="text-secondary-foreground ml-4"
+              name='ellipsis-vertical'
+              className='text-secondary-foreground ml-4'
               size={15}
             />
           </Link>

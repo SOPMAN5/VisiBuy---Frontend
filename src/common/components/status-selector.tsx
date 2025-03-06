@@ -1,22 +1,22 @@
-import { capitalize, cn } from "@/lib/utils";
-import { TOrderStatus } from "@/types/status";
+import { capitalize, cn } from "../../lib/utils";
+import { TOrderStatus } from "../../types/status";
 import * as SelectPrimitive from "@radix-ui/react-select";
-import Icon from "@/ui/Icon";
+import Icon from "../../ui/Icon";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectScrollDownButton,
   SelectValue,
-} from "@/ui/Select";
+} from "../../ui/Select";
 import { SelectTrigger } from "@radix-ui/react-select";
 import { cva } from "class-variance-authority";
-import React, { useCallback, useState,useRef } from "react";
-import { useUpdateSellerOrderStatus } from "@/modules/Seller/mutations/order/useUpdateOrderStatus";
-import { useAppDispatch } from "@/hooks/app-hooks";
-import { setLoading } from "@/store/rootReducer";
-import { useToast } from "@/ui/use-toast";
-import { SUCCESS_RESPONSE_UPDATE_RECORD } from "@/lib/systemConfig";
+import React, { useCallback, useState, useRef } from "react";
+import { useUpdateSellerOrderStatus } from "../../modules/Seller/mutations/order/useUpdateOrderStatus";
+import { useAppDispatch } from "../../hooks/app-hooks";
+import { setLoading } from "../../store/rootReducer";
+import { useToast } from "../../ui/use-toast";
+import { SUCCESS_RESPONSE_UPDATE_RECORD } from "../../lib/systemConfig";
 const orderStatusVariants = cva(
   "text-lg w-[100px] h-10 focus:border-none outline-none bg-opacity-15",
   {
@@ -42,7 +42,7 @@ function OrderSelectStatus({
   const dispatch = useAppDispatch();
   const updateSellerOrderStatusMutation = useUpdateSellerOrderStatus();
   const [orderStatus, setOrderStatus] = useState(status);
- 
+
   const handleSetOrderStatus = useCallback(
     async (status: TOrderStatus) => {
       prevStatus.current = orderStatus;
@@ -54,13 +54,16 @@ function OrderSelectStatus({
         toast({
           variant: "success",
           title: "Sucess",
-          description: SUCCESS_RESPONSE_UPDATE_RECORD.replace('{{MODEL}}','Order Status'),
+          description: SUCCESS_RESPONSE_UPDATE_RECORD.replace(
+            "{{MODEL}}",
+            "Order Status"
+          ),
           duration: 5000,
         });
       } catch (error: any) {
-        dispatch(setLoading(false))
+        dispatch(setLoading(false));
         setOrderStatus(prevStatus.current); // if status update fails revert to old status
-        console.log(error?.response.data.msg,prevStatus);
+        console.log(error?.response.data.msg, prevStatus);
         toast({
           variant: "destructive",
           title: "Uh oh! Something went wrong.",
@@ -69,7 +72,7 @@ function OrderSelectStatus({
         });
       }
     },
-    [updateSellerOrderStatusMutation.isPending,orderStatus]
+    [updateSellerOrderStatusMutation.isPending, orderStatus]
   );
   return (
     <Select onValueChange={handleSetOrderStatus} value={orderStatus}>
@@ -78,20 +81,20 @@ function OrderSelectStatus({
       >
         <SelectValue placeholder={capitalize(orderStatus)} />
       </SelectTrigger>
-      <SelectContent className="bg-[#d5d1d1] font-OpenSans ">
-        <SelectItem value="cancelled" className="focus:bg-[#C8E2FF]">
+      <SelectContent className='bg-[#d5d1d1] font-OpenSans '>
+        <SelectItem value='cancelled' className='focus:bg-[#C8E2FF]'>
           Cancelled
         </SelectItem>
-        <SelectItem value="accepted" className="focus:bg-[#C8E2FF]">
+        <SelectItem value='accepted' className='focus:bg-[#C8E2FF]'>
           Accepted
         </SelectItem>
-        <SelectItem value="delivered" className="focus:bg-[#C8E2FF]">
+        <SelectItem value='delivered' className='focus:bg-[#C8E2FF]'>
           Delivered
         </SelectItem>
-        <SelectItem value="dispatched" className="focus:bg-[#C8E2FF]">
+        <SelectItem value='dispatched' className='focus:bg-[#C8E2FF]'>
           Dispatched
         </SelectItem>
-        <SelectItem value="pending" className="focus:bg-[#C8E2FF]">
+        <SelectItem value='pending' className='focus:bg-[#C8E2FF]'>
           Pending
         </SelectItem>
       </SelectContent>

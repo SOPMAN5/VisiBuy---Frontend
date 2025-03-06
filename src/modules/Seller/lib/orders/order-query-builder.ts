@@ -1,4 +1,4 @@
-import { BaseQueryBuilder } from "@/lib/query-base-builder";
+import { BaseQueryBuilder } from "../../../../lib/query-base-builder";
 import { ISellerOrderQueryParams } from "../../models/orders";
 
 class SellerOrdersQueryBuilder extends BaseQueryBuilder<ISellerOrderQueryParams> {

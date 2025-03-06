@@ -1,4 +1,4 @@
-import { axiosWithAuth } from "@/lib/client";
+import { axiosWithAuth } from "../../../../lib/client";
 import ISellerFeebackRepository from "../../respository/seller-feedback-repository";
 import { FeedbackDto, TSellerFedbackResponse } from "../../models/feedback";
 

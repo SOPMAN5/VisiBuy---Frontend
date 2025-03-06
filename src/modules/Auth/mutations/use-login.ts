@@ -1,11 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import AuthService from "@/modules/Auth/lib/service";
-import { LoginCredentials, Role } from "@/modules/Auth/models/types";
-import { getMeQueryKey } from "@/modules/Auth/queries/queries";
-import { useAppDispatch } from "@/hooks/app-hooks";
+import AuthService from "../lib/service";
+import { LoginCredentials, Role } from "../models/types";
+import { getMeQueryKey } from "../queries/queries";
+import { useAppDispatch } from "../../../hooks/app-hooks";
 import { useNavigate } from "react-router-dom";
 import { setCredentials, setError } from "../features/slices";
-import { dashboardConfig } from "@/lib/config";
+import { dashboardConfig } from "../../../lib/config";
 export function useLogin() {
   const queryClient = useQueryClient();
   const dispatch = useAppDispatch();

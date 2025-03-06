@@ -1,18 +1,18 @@
-import { QueryResult } from "@/models/query-result";
+import { QueryResult } from "../../../../models/query-result";
 import {
   ISellerOrderQueryParams,
   ISellerOrder,
   TUpdateSellerOrderStaus,
 } from "../../models/orders";
 import { ISellerOrderRepository } from "../../respository/seller-order-respository";
-import { axiosWithAuth } from "@/lib/client";
+import { axiosWithAuth } from "../../../../lib/client";
 
 class SellerOrderApiAdapter implements ISellerOrderRepository {
   async updateOrderStatus({ id, status }: TUpdateSellerOrderStaus) {
-    const response = await axiosWithAuth.post(
-      `/update/status`,
-      { order_id: id, status }
-    );
+    const response = await axiosWithAuth.post(`/update/status`, {
+      order_id: id,
+      status,
+    });
     return response.data;
   }
   async getOrder(id: string) {
