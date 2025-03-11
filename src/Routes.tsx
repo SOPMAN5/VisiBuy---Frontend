@@ -21,22 +21,18 @@ import { HelpSupportPage } from "./pages/Seller/help-support/help-support";
 import path from "path";
 import { PlacingOrderPage } from "./pages/Seller/help-support/placing-order";
 import { OrderPaymentPage } from "./pages/Seller/help-support/order-payment";
-import {
-  
-  PaymentFaqPage,
-} from "./pages/Seller/help-support/payment-faq";
 import BuyerDashboardLayout from "./layouts/buyer/BuyerDashboardLayout";
 import BuyerHomePage from "./pages/Buyer/Home";
 import BuyerDashboardPage from "./pages/Buyer/Dashboard";
 import BuyerProductsPage from "./pages/Buyer/Products";
 import BuyerTrackOrderPage from "./pages/Buyer/TrackOrder";
+import BuyerOrderDetailsPage from "./pages/Buyer/OrderDetails";
 import BuyerCartPage from "./pages/Buyer/Cart";
+import BuyerCartSummaryPage from "./pages/Buyer/CartSummary";
 import BuyerNotificationsPage from "./pages/Buyer/Notifications";
 import BuyerProfilePage from "./pages/Buyer/Profile";
-
-
-
-
+import BuyerProductDetails from "./pages/Buyer/ProductDetails";
+import Checkout from "./modules/Buyer/features/checkout/Checkout";
 
 const router = createHashRouter([
   {
@@ -81,7 +77,6 @@ const router = createHashRouter([
   { path: "/login", element: <LoginPage /> },
   { path: "/signup", element: <SignUpPage /> },
   { path: "/reset-password", element: <PassowordRestPage /> },
-
   {
     path: "/dashboard/seller",
 
@@ -89,6 +84,7 @@ const router = createHashRouter([
       <PrivateRoute>
         <SellerDashboardLayout />
       </PrivateRoute>
+      // <SellerDashboardLayout />
     ),
     children: [
       { path: "products", element: <SellerProductPage /> },
@@ -107,10 +103,6 @@ const router = createHashRouter([
         children: [
           { path: "placing-order", element: <PlacingOrderPage /> },
           { path: "order-payment", element: <OrderPaymentPage /> },
-          {
-            path: "faq",
-            children: [{ path: "payment", element: <PaymentFaqPage /> }],
-          },
         ],
       },
     ],
@@ -122,13 +114,28 @@ const router = createHashRouter([
       <PrivateRoute>
         <BuyerDashboardLayout />
       </PrivateRoute>
+      // <BuyerDashboardLayout />
     ),
     children: [
       { index: true, element: <BuyerHomePage /> },
       { path: "analytics", element: <BuyerDashboardPage /> },
       { path: "purchases", element: <BuyerProductsPage /> },
+
+      {
+        path: "track-order",
+        element: <BuyerTrackOrderPage />,
+        children: [
+          { path: "view/:orderId", element: <BuyerOrderDetailsPage /> },
+        ],
+      },
+
+      { path: "product/:id", element: <BuyerProductDetails /> },
       { path: "track-order", element: <BuyerTrackOrderPage /> },
+
       { path: "carts", element: <BuyerCartPage /> },
+      { path: "carts/summary/:id", element: <BuyerCartSummaryPage /> },
+      { path: "carts/checkout/:id", element: <Checkout /> },
+
       { path: "notification", element: <BuyerNotificationsPage /> },
       { path: "profile", element: <BuyerProfilePage /> },
     ],
