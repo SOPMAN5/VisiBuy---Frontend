@@ -33,6 +33,7 @@ import BuyerNotificationsPage from "./pages/Buyer/Notifications";
 import BuyerProfilePage from "./pages/Buyer/Profile";
 import BuyerProductDetails from "./pages/Buyer/ProductDetails";
 import Checkout from "./modules/Buyer/features/checkout/Checkout";
+import { PaymentFaqPage } from "./pages/Seller/help-support/payment-faq";
 
 const router = createHashRouter([
   {
@@ -103,6 +104,10 @@ const router = createHashRouter([
         children: [
           { path: "placing-order", element: <PlacingOrderPage /> },
           { path: "order-payment", element: <OrderPaymentPage /> },
+          {
+            path: "faq",
+            children: [{ path: "payment", element: <PaymentFaqPage /> }],
+          },
         ],
       },
     ],
