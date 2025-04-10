@@ -2,8 +2,12 @@ import { createHashRouter, RouterProvider } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Provider } from "react-redux";
 import { persistor, store } from "@/store/store";
+import { Provider } from "react-redux";
+import { persistor, store } from "@/store/store";
 import router from "./Routes";
 import { PersistGate } from "redux-persist/integration/react";
+import { NotificationsProvider } from "@/context/notifications/NotificationsContext";
+
 
 // Using createHashRouter with Hash-based routing is better for GitHub Pages because:
 // - GitHub Pages serves static files and does not support server-side routing, meaning traditional routing (createBrowserRouter) would result in 404 errors when refreshing or navigating directly to non-root URLs.

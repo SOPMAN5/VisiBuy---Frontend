@@ -1,4 +1,3 @@
-import FilterComponent from "@/modules/Buyer/features/filter/Filter";
 import { fetchProducts } from "@/modules/Buyer/features/product/productSlice";
 import { selectFilteredProducts } from "@/modules/Buyer/selectors";
 import { AppDispatch, RootState } from "@/store/store";
@@ -7,13 +6,14 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 interface Product {
-  id: string;
-  images?: string;
+  _id: string;
+  model: string;
+  images?: string[];
   storeName: string;
   storeAvatar: string;
-  productName: string;
+  brand: string;
   size: number[];
-  color?: string[];
+  color: string[];
   price: number;
 }
 
@@ -22,54 +22,37 @@ const BuyerProductsPage = () => {
   const products = useSelector(
     (state: RootState) => state.buyer.product.products
   );
+  const filteredProducts = useSelector(selectFilteredProducts) || [];
+  const filters = useSelector((state: any) => state.buyer.filters) || {};
+  const [filtersApplied, setFiltersApplied] = useState(false);
 
   useEffect(() => {
     dispatch(fetchProducts());
   }, [dispatch]);
 
-  // console.log("Products from Redux:", products);
-  const filteredProducts = useSelector(selectFilteredProducts) || [];
-  const filters = useSelector((state: any) => state.buyer.filters) || {};
-  const [filtersApplied, setFiltersApplied] = useState(false);
-
-  // const filtersApplied =
-  //   (filters?.size?.length ?? 0) > 0 ||
-  //   (filters?.color?.length ?? 0) > 0 ||
-  //   (filters?.priceRange?.[0] ?? 0) !== 0 ||
-  //   (filters?.priceRange?.[1] ?? 1000) !== 1000;
+  // Determine the products to display (filtered or all)
+  const displayedProducts = filtersApplied ? filteredProducts : products;
 
   return (
     <div>
-      <div className='flex justify-between items-center'>
-        <h2>Products</h2>
-        <FilterComponent
-          onApplyFilters={() => setFiltersApplied((prev) => !prev)}
-        />
+      {/* Header with Filter Component */}
+      <div className='flex justify-between items-center mb-6'>
+        <h2 className='text-3xl font-bold font-montserrat'>Products</h2>
+        {/* <FilterComponent onApplyFilters={() => setFiltersApplied((prev) => !prev)} /> */}
       </div>
 
-      {/* Show filtered products if filters are applied */}
-      {filtersApplied ? (
-        filteredProducts.length > 0 ? (
-          <div>
-            {filteredProducts.map((product) => (
-              <div key={product?._id} className='product-card'>
-                <h3>{product?.model}</h3>
-                <p>Size: {product.size.join(", ")}</p>
-                <p>Color: {product?.color.join(", ")}</p>
-                <p>Price: ${product?.price}</p>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p>No products match the selected filters.</p>
-        )
-      ) : (
-        // Show all products only if no filters are applied
-        <div className='flex gap-6 p-6' style={{ flexWrap: "wrap" }}>
-          {products?.map((product: any) => (
-            <ProductSkeleton type='prod' key={product?._id} product={product} />
+      {/* Product Grid using Tailwind CSS Masonry */}
+      {displayedProducts.length > 0 ? (
+        <div
+          className='grid grid-rows-[repeat(auto-fit,minmax(200px,1fr))] auto-cols-[251px] justify-center md:flex md:justify-normal gap-6 p-6'
+          style={{ flexWrap: "wrap" }}
+        >
+          {displayedProducts.map((product) => (
+            <ProductSkeleton type='prod' product={product} key={product._id} />
           ))}
         </div>
+      ) : (
+        <p className='text-center text-gray-500'>No products available.</p>
       )}
     </div>
   );

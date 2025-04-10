@@ -22,7 +22,6 @@ import path from "path";
 import { PlacingOrderPage } from "./pages/Seller/help-support/placing-order";
 import { OrderPaymentPage } from "./pages/Seller/help-support/order-payment";
 import BuyerDashboardLayout from "./layouts/buyer/BuyerDashboardLayout";
-import BuyerHomePage from "./pages/Buyer/Home";
 import BuyerDashboardPage from "./pages/Buyer/Dashboard";
 import BuyerProductsPage from "./pages/Buyer/Products";
 import BuyerTrackOrderPage from "./pages/Buyer/TrackOrder";
@@ -33,7 +32,8 @@ import BuyerNotificationsPage from "./pages/Buyer/Notifications";
 import BuyerProfilePage from "./pages/Buyer/Profile";
 import BuyerProductDetails from "./pages/Buyer/ProductDetails";
 import Checkout from "./modules/Buyer/features/checkout/Checkout";
-import { PaymentFaqPage } from "./pages/Seller/help-support/payment-faq";
+import BuyerNotificationsDetailsPage from "./pages/Buyer/NotificationsDetails";
+import FileDispute from "./pages/Buyer/FileDispute";
 
 const router = createHashRouter([
   {
@@ -104,10 +104,6 @@ const router = createHashRouter([
         children: [
           { path: "placing-order", element: <PlacingOrderPage /> },
           { path: "order-payment", element: <OrderPaymentPage /> },
-          {
-            path: "faq",
-            children: [{ path: "payment", element: <PaymentFaqPage /> }],
-          },
         ],
       },
     ],
@@ -122,9 +118,9 @@ const router = createHashRouter([
       // <BuyerDashboardLayout />
     ),
     children: [
-      { index: true, element: <BuyerHomePage /> },
+      
+      { index:true, element: <BuyerProductsPage /> },
       { path: "analytics", element: <BuyerDashboardPage /> },
-      { path: "purchases", element: <BuyerProductsPage /> },
 
       {
         path: "track-order",
@@ -135,13 +131,15 @@ const router = createHashRouter([
       },
 
       { path: "product/:id", element: <BuyerProductDetails /> },
-      { path: "track-order", element: <BuyerTrackOrderPage /> },
+      
 
       { path: "carts", element: <BuyerCartPage /> },
       { path: "carts/summary/:id", element: <BuyerCartSummaryPage /> },
       { path: "carts/checkout/:id", element: <Checkout /> },
 
       { path: "notification", element: <BuyerNotificationsPage /> },
+      { path: "notification/:id", element: <BuyerNotificationsDetailsPage /> },
+      { path: "report", element: <FileDispute /> },
       { path: "profile", element: <BuyerProfilePage /> },
     ],
   },

@@ -1,9 +1,11 @@
+
 import { TOrderStatus } from "@/types/status";
+
 
 export function statusToClassName(status: TOrderStatus): string {
   switch (status) {
     case "pending":
-      return "text-blue-200";
+      return "text-blue";
     case "accepted":
       return "text-yellow-700";
     case "dispatched":

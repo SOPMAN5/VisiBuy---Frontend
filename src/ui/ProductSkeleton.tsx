@@ -11,7 +11,7 @@ import { useState } from "react";
 interface Product {
   size?: any;
   _id: string;
-  images: string;
+  images: string[];
   storeName: string;
   storeAvatar?: string;
   model: string;
@@ -41,11 +41,10 @@ const ProductSkeleton: React.FC<ProductSkeletonProps> = ({ product, type }) => {
         price: product.price,
         quantity: 1,
         images: product.images,
-        // color: product,
-        // size: product,
         model: product.model,
         storeName: product.storeName,
-        // productName: undefined,
+        color: undefined,
+        sizes: undefined,
       })
     );
   };
@@ -131,13 +130,14 @@ const ProductSkeleton: React.FC<ProductSkeletonProps> = ({ product, type }) => {
           )}
         </>
       ) : (
-        <button
-          onClick={handleAddToCart}
-          className='absolute top-2 right-2 bg-green-500 p-2 rounded-full shadow-md z-10'
-          aria-label='Add to cart'
-        >
-          <FaShoppingCart className='text-white' size={20} />
-        </button>
+        // <button
+        //   onClick={handleAddToCart}
+        //   className='absolute top-2 right-2 bg-green-500 p-2 rounded-full shadow-md z-10'
+        //   aria-label='Add to cart'
+        // >
+        //   <FaShoppingCart className='text-white' size={20} />
+        // </button>
+        ""
       )}
     </div>
   );

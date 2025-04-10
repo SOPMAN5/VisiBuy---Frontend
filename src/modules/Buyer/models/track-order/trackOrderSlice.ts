@@ -1,40 +1,28 @@
-// src/modules/Buyer/features/track-order/trackOrderSlice.ts
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { fetchOrderHistory } from "../../lib/track-order/api";
 import { Order } from "@/types/orders";
 
-interface TrackOrderState {
-  orders: Order[];
-  total_order: number;
-  loading: boolean;
-  error: string | null;
-}
-
-const initialState: TrackOrderState = {
-  orders: [],
-  total_order: 0,
-  loading: false,
-  error: null,
-};
-
 export const getOrderHistory = createAsyncThunk(
   "trackOrder/getOrderHistory",
-  async (token: string, { rejectWithValue }) => {
-    try {
-      const data = await fetchOrderHistory();
-      return data;
-    } catch (error: any) {
-      // Return a custom error message
-      return rejectWithValue(
-        "Failed to fetch order history. Please try again later."
-      );
-    }
+  async ({ page = 1 }: { page?: number }) => {
+    const response = await fetchOrderHistory(page); // ✅ Pass page parameter
+    return response;
   }
 );
 
 const trackOrderSlice = createSlice({
   name: "trackOrder",
-  initialState,
+  initialState: {
+    orders: [] as Order[],
+    loading: false,
+    error: null as string | null,
+    pagination: {
+      currentPage: 1,
+      totalPages: 1,
+      pageSize: 10,
+      totalItems: 0,
+    },
+  },
   reducers: {},
   extraReducers: (builder) => {
     builder
@@ -44,16 +32,12 @@ const trackOrderSlice = createSlice({
       })
       .addCase(getOrderHistory.fulfilled, (state, action) => {
         state.loading = false;
-        state.orders = action.payload.orders;
-        state.total_order = Number(action.payload.total_order);
+        state.orders = action.payload.orders || []; // ✅ Backend should return correct orders
+        state.pagination = action.payload.pagination || state.pagination;
       })
       .addCase(getOrderHistory.rejected, (state, action) => {
         state.loading = false;
-        // Ensure action.payload is a string before assigning
-        state.error =
-          typeof action.payload === "string"
-            ? action.payload
-            : "An unexpected error occurred.";
+        state.error = action.error.message || "Something went wrong";
       });
   },
 });
