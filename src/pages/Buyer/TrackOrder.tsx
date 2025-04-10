@@ -9,40 +9,6 @@ import OrderCard from "@/modules/Buyer/features/track-order/components/OrderCard
 import useOrderActions from "@/modules/Buyer/hooks/useOrderActions";
 import useOrderFilter from "@/modules/Buyer/hooks/useOrderFilter";
 
-type FilterStatus = TOrderStatus | "all";
-
-const BuyerTrackOrderPage: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const { orders, loading, error } = useSelector(
-    (state: RootState) => state.trackOrder
-  );
-
-  const [statusFilter, setStatusFilter] = useState<FilterStatus>("all");
-  const [searchQuery, setSearchQuery] = useState("");
-
-  const token = localStorage.getItem("auth-token") || "";
-
-  useEffect(() => {
-    dispatch(getOrderHistory(token));
-  }, [dispatch, token]);
-
-  const handleStatusChange = (status: FilterStatus) => {
-    setStatusFilter(status);
-  };
-
-  const handleSearch = (query: string) => {
-    setSearchQuery(query);
-  };
-
-  const filteredOrders = orders.filter((order: Order) => {
-    const matchesStatus =
-      statusFilter === "all" || order.order_status === statusFilter;
-    const matchesSearch =
-      order.product.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      order.orderId.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesStatus && matchesSearch;
-  });
-
 const BuyerTrackOrderPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const location = useLocation();

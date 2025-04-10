@@ -6,6 +6,7 @@ interface OrderStatusButtonsProps {
   currentStatus: FilterStatus;
   onStatusChange: (status: FilterStatus) => void;
   className?: string;
+}
 const statuses: FilterStatus[] = [
   "accepted",
   "dispatched",
