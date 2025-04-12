@@ -20,87 +20,74 @@ import { ProductPreview } from "./components/product-preview";
 import { Spinner } from "@/common/components/spinner";
 import { PreviewProductLoader } from "./components/preview-product-loader";
 
-const fileToDataURL = (file: File): Promise<string> => {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-
-    reader.onload = () => {
-      resolve(reader.result as string);
-    };
-
-    reader.onerror = () => {
-      reject(new Error("Failed to read file"));
-    };
-
-    reader.readAsDataURL(file);
-  });
-};
 export function AddProductModal() {
   const sellerProductRoute = dashboardConfig.getFullPath("seller", "products");
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [isSuccess, setIsSuccess] = useState(false);
+  const [formData, setFormData] = useState<any>();
   const [isPreviewModal, setIsPreviewModal] = useState(false);
   const [isLoadingModal, setIsLoadingModal] = useState(false);
-  const isOpen = searchParams.get("modal") === "add-product";
+  const isOpen = searchParams.get("modal") === "add-product" && !isPreviewModal;
   const submitButtonRef = useRef<HTMLButtonElement>(null);
   const { toast } = useToast();
   const createProductMutation = useCreateSellerProduct();
   function handleModalOpen() {
+    setFormData(undefined);
+    setIsPreviewModal(false)
     navigate(sellerProductRoute);
   }
   const handlesubmitButtonRef = () => {
     if (submitButtonRef.current) {
-      setIsLoadingModal(true);
       submitButtonRef.current.click();
     }
   };
-  const handleSubmitProduct = async (data: Omit<ProductDto, "id">) => {
-    try {
-      const formData = new FormData();
 
-      // Append basic form fields
-      formData.append("model", data.model);
-      formData.append("brand", data.brand);
-      formData.append("price", data.price.toString());
-      formData.append("description", data.description);
-      formData.append("stock_status", data.stock_status);
-
-      // Append each color value individually
-      // When using the same key multiple times, it's treated as an array on the server
-      data.color.forEach((color) => {
-        formData.append("color", color);
-      });
-
-      // Append each size value individually
-      data.size.forEach((size) => {
-        formData.append("size", size.toString());
-      });
-      if (data.images) {
-        data.images.forEach((imageFile) => {
-          formData.append("images", imageFile);
+  const handleSubmitProduct = async () => {
+    if (formData) {
+      try {
+        const newFormData = new FormData();
+        // Append  basic form fields
+        newFormData.append("model", formData.model);
+        newFormData.append("brand", formData.brand);
+        newFormData.append("price", formData.price.toString());
+        newFormData.append("description", formData.description);
+        newFormData.append("stock_status", formData.stock_status);
+        // Append each color value individually
+        // When using the same key multiple times, it's treated as an array on the server
+        formData?.color.forEach((color: string | Blob) => {
+          newFormData.append("color", color);
+        });
+        // Append each size value individually
+        formData?.size.forEach((size: { toString: () => string | Blob }) => {
+          newFormData.append("size", size.toString());
+        });
+        if (formData?.images) {
+          formData?.images.forEach((value: { imageFile: string | Blob }) => {
+            newFormData.append("images", value.imageFile);
+          });
+        }
+        await createProductMutation.mutateAsync(newFormData);
+        toast({
+          variant: "success",
+          title: "",
+          description: SUCCESS_RESPONSE_CREATE_RECORD.replace(
+            "{{MODEL}}",
+            "Product"
+          ),
+          duration: 5000,
+        });
+        handleModalOpen();
+      } catch (error: any) {
+        toast({
+          variant: "destructive",
+          title: "Uh oh! Something went wrong.",
+          description: JSON.stringify(
+            error?.response.data.msg?.message || "An error occurred"
+          ),
+          duration: 5000,
         });
       }
-
-      await createProductMutation.mutateAsync(formData);
-      toast({
-        variant: "success",
-        title: "",
-        description: SUCCESS_RESPONSE_CREATE_RECORD.replace(
-          "{{MODEL}}",
-          "Product"
-        ),
-        duration: 5000,
-      });
-    } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "Uh oh! Something went wrong.",
-        description: JSON.stringify(
-          error?.response.data.msg?.message || "An error occurred"
-        ),
-        duration: 5000,
-      });
     }
   };
   return (
@@ -116,13 +103,13 @@ export function AddProductModal() {
           <div className=" flex gap-x-5 pr-4 py-2">
             <Button
               className="tex-sm lg:tex-xl px-12 bg-transparent border-black text-black font-Montserrat hover:text-black"
-              onClick={handleModalOpen}
+              onClick={() => setIsPreviewModal(false)}
             >
               Cancel
             </Button>
             <Button
               className="tex-sm md:text-xl text-white px-12 font-Montserrat"
-              onClick={handlesubmitButtonRef}
+              onClick={handleSubmitProduct}
               disabled={createProductMutation.isPending}
             >
               Upload
@@ -133,7 +120,7 @@ export function AddProductModal() {
           </div>
         }
       >
-        <ProductPreview />
+        {formData && <ProductPreview productFormData={formData} />}
       </ModalWrapperDialog>
       <ModalWrapperDialog
         open={isOpen}
@@ -159,7 +146,10 @@ export function AddProductModal() {
       >
         <AddProductForm
           submitButtonRef={submitButtonRef}
-          handleSubmitProduct={handleSubmitProduct}
+          setIsLoadingModal={setIsLoadingModal}
+          setIsPreviewModal={setIsPreviewModal}
+          formData={formData}
+          setFormData={setFormData}
         />
       </ModalWrapperDialog>
     </>
