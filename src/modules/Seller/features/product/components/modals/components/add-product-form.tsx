@@ -1,6 +1,6 @@
 import { AddProductSchema } from "@/modules/Seller/models/product";
 import { ModalWrapperDialog } from "@/common/components/modal-wrappper";
-import { useCallback, useId, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 import {
   Form,
   FormControl,
@@ -22,6 +22,9 @@ import { Button } from "@/ui/Button";
 
 import { Combobox } from "@/ui/combobox";
 import ImagePickerFactory from "@/common/components/image-picker-factory";
+import { useCreateSellerProduct } from "@/modules/Seller/mutations/product/useCreateSellerProduct";
+import { useToast } from "@/ui/use-toast";
+import { SUCCESS_RESPONSE_CREATE_RECORD } from "@/lib/systemConfig";
 
 const colors: ISearchableData[] = [
   { value: "red", label: "Red" },
@@ -35,24 +38,28 @@ const sizes: ISearchableData[] = [
 ];
 export function AddProductForm({
   submitButtonRef,
+  handleSubmitProduct,
 }: {
   submitButtonRef: React.RefObject<HTMLButtonElement>;
+  handleSubmitProduct: (data: any) => void;
 }) {
   const Id = useId();
+  const { toast } = useToast();
   const triggerRef = useRef<HTMLDivElement>(null);
   const [imagesMap, setImagesMap] = useState(new Map());
-
+  const [imageFiles, setImageFiles] = useState<File[]>();
+  const createProductMutation = useCreateSellerProduct();
   const form = useForm<z.infer<typeof AddProductSchema>>({
     resolver: zodResolver(AddProductSchema),
     defaultValues: {
-      size: "",
+      size: [],
       brand: "",
-      images: [],
+      //images: [],
       model: "",
       price: 0,
       description: "",
-      stock_status: "In stock",
-      color: "",
+      stock_status: "in_stock",
+      color: [],
     },
   });
   const handleImageRemove = (id: string | undefined) => {
@@ -80,16 +87,26 @@ export function AddProductForm({
     });
   };
 
-  const onSubmit = (data: z.infer<typeof AddProductSchema>) => {
+  const onSubmit = async (data: z.infer<typeof AddProductSchema>) => {
     console.log("Form submitted:", data);
+    if (imageFiles && imageFiles?.length < 4) return; // block submission of form
+    const finalFormData = {
+      ...data,
+      // Add processed images to the form data
+      images: imageFiles,
+    };
+    console.log("Form submitted:", finalFormData);
     // Add your form submission logic here
+    handleSubmitProduct(finalFormData);
   };
-  const buildFormImages = useCallback(
-    (imagesMap: Map<any, any>) => {
-      return Array.from(imagesMap.entries()).map(([id, value]) => {});
-    },
-    [imagesMap]
-  );
+
+  useEffect(() => {
+    const extractedImagesFiles = Array.from(imagesMap.entries()).map(
+      ([id, value]) => value.imageFile
+    );
+    setImageFiles(extractedImagesFiles);
+  }, [imagesMap]);
+
   const buildPreviewImages = useCallback(
     (imagesMap: Map<any, any>) => {
       return Array.from(imagesMap.entries())
@@ -109,7 +126,12 @@ export function AddProductForm({
   return (
     <div>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            form.handleSubmit(onSubmit)(e);
+          }}
+        >
           <div className="flex gap-x-10 mb-8">
             <div className="flex-1">
               <h3
@@ -299,7 +321,11 @@ export function AddProductForm({
                   />
                 ))}
               </div>
-
+              {imageFiles && imageFiles.length < 4 && (
+                <p className="text-destructive my-3 text-xl">
+                  Upload atleast four images
+                </p>
+              )}
               <p className="font-OpenSans my-4 text-xl">
                 Add at least 4 photos (PNG or JPEG, not more than 5MB). You can
                 add up to 8 photos. Buyers want to see all details and angles
@@ -381,7 +407,8 @@ export function AddProductForm({
                           options={colors}
                           form={form}
                           name="color"
-                          placeholder="Select a color"
+                          placeholder="Select one or more color"
+                          multiselect={true}
                         />
                       </FormControl>
                       <FormMessage />
@@ -401,8 +428,33 @@ export function AddProductForm({
                         <Combobox
                           options={sizes}
                           form={form}
-                          name="color"
-                          placeholder="Select a color"
+                          name="size"
+                          placeholder="Select one or more sizes"
+                          multiselect={true}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="stock_status"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="flex justify-start text-xl">
+                        Stock Status
+                        <span className="text-destructive ml-1">*</span>
+                      </FormLabel>
+                      <FormControl>
+                        <Combobox
+                          options={[
+                            { label: "In Stock", value: "in_stock" },
+                            { label: "Out of Stock", value: "out_stock" },
+                          ]}
+                          form={form}
+                          name="stock_status"
+                          placeholder="Select a stock status"
                         />
                       </FormControl>
                       <FormMessage />
