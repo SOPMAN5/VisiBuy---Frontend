@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -13,15 +14,26 @@ import {
 import { useToast } from "../../../../ui/use-toast";
 import Input from "../../../../ui/Input";
 import { Button } from "../../../../ui/Button";
-import { Loader2, MoveRight } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { Checkbox } from "../../../../ui/Checkbox";
 import { useLogin } from "../../mutations/use-login";
 import { Link } from "react-router-dom";
 import Icon from "../../../../ui/Icon";
 
 export function LoginForm() {
-  const { toast, toasts } = useToast();
+  const { toast } = useToast();
   const loginMutation = useLogin();
+  const [showPassword, setShowPassword] = useState(false);
+  const [isTypingDone, setIsTypingDone] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsTypingDone(true);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     mode: "onTouched",
@@ -32,6 +44,7 @@ export function LoginForm() {
       isRemeberChecked: false,
     },
   });
+
   const onSubmit = async (values: z.infer<typeof LoginSchema>) => {
     try {
       await loginMutation.mutateAsync(values);
@@ -45,6 +58,7 @@ export function LoginForm() {
       });
     }
   };
+
   return (
     <div className="w-full container lg:w-[50%] ">
       <div className="flex items-center justify-center my-6">
@@ -67,14 +81,18 @@ export function LoginForm() {
             <FormField
               control={form.control}
               name="email"
+              name="email"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="flex justify-start text-xl">
+                  <FormLabel className="flex justify-start text-xl">
                     Email/Phone Number
+                    <span className="text-destructive ml-1">*</span>
                     <span className="text-destructive ml-1">*</span>
                   </FormLabel>
                   <FormControl>
                     <Input
+                      placeholder="Email"
                       placeholder="Email"
                       {...field}
                       className=" text-xl"
@@ -85,16 +103,22 @@ export function LoginForm() {
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
               name="pass"
+              name="pass"
               render={({ field }) => (
+                <FormItem className="py-4">
+                  <FormLabel className="flex justify-start text-xl items-center">
+                    Password<span className="text-destructive ml-1">*</span>
                 <FormItem className="py-4">
                   <FormLabel className="flex justify-start text-xl items-center">
                     Password<span className="text-destructive ml-1">*</span>
                   </FormLabel>
                   <FormControl>
                     <Input
+                      placeholder="Password"
                       placeholder="Password"
                       {...field}
                       className=" text-base"
@@ -106,19 +130,26 @@ export function LoginForm() {
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
               name="isRemeberChecked"
+              name="isRemeberChecked"
               render={({ field }) => (
                 <FormItem className="py-4">
+                <FormItem className="py-4">
                   <FormControl>
+                    <div className="flex items-center space-x-2">
                     <div className="flex items-center space-x-2">
                       <Checkbox
                         checked={field.value}
                         onCheckedChange={field.onChange}
                         id="loginRemember"
+                        id="loginRemember"
                       />
                       <FormLabel
+                        htmlFor="loginRemember"
+                        className="flex justify-start text-xl"
                         htmlFor="loginRemember"
                         className="flex justify-start text-xl"
                       >
@@ -139,6 +170,7 @@ export function LoginForm() {
               >
                 Sign In
                 {loginMutation.isPending && (
+                  <Loader2 className="ml-2 animate-spin" />
                   <Loader2 className="ml-2 animate-spin" />
                 )}
               </Button>
