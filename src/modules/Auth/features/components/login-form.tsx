@@ -171,7 +171,7 @@ export function LoginForm() {
                 Sign In
                 {loginMutation.isPending && (
                   <Loader2 className="ml-2 animate-spin" />
-                  <Loader2 className="ml-2 animate-spin" />
+                  
                 )}
               </Button>
             </div>
