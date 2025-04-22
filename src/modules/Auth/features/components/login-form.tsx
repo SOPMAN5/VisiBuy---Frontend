@@ -60,43 +60,40 @@ export function LoginForm() {
   };
 
   return (
-    <div className="w-full container lg:w-[50%] ">
-      <div className="flex items-center justify-center my-6">
-        <img
-          src="/VisiBuy - Black.png"
-          alt="visibuy logo"
-          className="lg:hidden w-56 "
-        />
+    <div className="w-full max-w-xl mx-auto flex flex-col items-center min-h-screen px-4">
+      {/* Welcome Section */}
+      <div className="text-center mb-8">
+        <h2
+          className={`auth-heading mt-12  
+    whitespace-nowrap overflow-hidden 
+    ${isTypingDone ? "" : "border-r-4 border-black animate-typing"}`}
+        >
+          Welcome back!
+        </h2>
+        <p className="text-secondary-foreground text-xl font-OpenSans mt-4">
+          Please enter your login details.
+        </p>
       </div>
 
-      <h2 className="text-secondary-foreground font-bold text-5xl font-Montserrat">
-        Welcome back!
-      </h2>
-      <p className="text-secondary-foreground text-xl font-OpenSans mt-4">
-        Please enter your login details.
-      </p>
-      <div className="border-border border p-8 mt-8 rounded-2xl">
+      {/* Login Form */}
+      <div className="w-full border border-border p-8 rounded-2xl shadow-lg bg-white">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <FormField
               control={form.control}
               name="email"
-              name="email"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="flex justify-start text-xl">
-                  <FormLabel className="flex justify-start text-xl">
                     Email/Phone Number
                     <span className="text-destructive ml-1">*</span>
-                    <span className="text-destructive ml-1">*</span>
                   </FormLabel>
                   <FormControl>
                     <Input
                       placeholder="Email"
-                      placeholder="Email"
                       {...field}
-                      className=" text-xl"
-                      icon={<Icon name="mail" className="h-8 w-8" />}
+                      className="text-xl"
+                      icon={<Icon name="mail" className="h-6 w-6" />}
                     />
                   </FormControl>
                   <FormMessage />
@@ -107,11 +104,7 @@ export function LoginForm() {
             <FormField
               control={form.control}
               name="pass"
-              name="pass"
               render={({ field }) => (
-                <FormItem className="py-4">
-                  <FormLabel className="flex justify-start text-xl items-center">
-                    Password<span className="text-destructive ml-1">*</span>
                 <FormItem className="py-4">
                   <FormLabel className="flex justify-start text-xl items-center">
                     Password<span className="text-destructive ml-1">*</span>
@@ -119,11 +112,16 @@ export function LoginForm() {
                   <FormControl>
                     <Input
                       placeholder="Password"
-                      placeholder="Password"
                       {...field}
-                      className=" text-base"
-                      icon={<Icon name="eye" className="h-8 w-8" />}
-                      type="password"
+                      className="text-base"
+                      type={showPassword ? "text" : "password"}
+                      icon={
+                        <Icon
+                          name="eye"
+                          className="h-6 w-6 cursor-pointer"
+                          onClick={() => setShowPassword((prev) => !prev)}
+                        />
+                      }
                     />
                   </FormControl>
                   <FormMessage />
@@ -134,22 +132,16 @@ export function LoginForm() {
             <FormField
               control={form.control}
               name="isRemeberChecked"
-              name="isRemeberChecked"
               render={({ field }) => (
                 <FormItem className="py-4">
-                <FormItem className="py-4">
                   <FormControl>
-                    <div className="flex items-center space-x-2">
                     <div className="flex items-center space-x-2">
                       <Checkbox
                         checked={field.value}
                         onCheckedChange={field.onChange}
                         id="loginRemember"
-                        id="loginRemember"
                       />
                       <FormLabel
-                        htmlFor="loginRemember"
-                        className="flex justify-start text-xl"
                         htmlFor="loginRemember"
                         className="flex justify-start text-xl"
                       >
@@ -161,30 +153,31 @@ export function LoginForm() {
                 </FormItem>
               )}
             />
+
             <div className="pt-4">
               <Button
                 disabled={loginMutation.isPending || !form.formState.isValid}
                 type="submit"
                 className="w-full px-12 h-16 text-xl"
-                size="sm"
               >
                 Sign In
                 {loginMutation.isPending && (
                   <Loader2 className="ml-2 animate-spin" />
-                  
                 )}
               </Button>
             </div>
-            <div className="flex justify-center items-center text-xl text-secondary-foreground  font-OpenSans mt-4">
+
+            <div className="flex justify-center items-center text-xl text-secondary-foreground font-OpenSans mt-4">
               <h3>Don't have an account?</h3>
               <Button asChild variant="link" className="px-2 text-blue">
-                <Link to="/signup" className="text-xl ">
+                <Link to="/signup" className="text-xl">
                   Sign Up
                 </Link>
               </Button>
             </div>
+
             <Button asChild variant="link" className="h-2 text-blue">
-              <Link to="/reset-password" className="text-xl   font-OpenSans">
+              <Link to="/reset-password" className="text-xl font-OpenSans">
                 Forgot Password
               </Link>
             </Button>
