@@ -24,6 +24,24 @@ const ACCEPTED_IMAGE_TYPES = [
   "image/png",
   "image/webp",
 ];
+const statusConfig: any = {
+  unverified: {
+    color: "#007AFF",
+    label: "Unverified",
+  },
+  pending: {
+    color: "#FF6200",
+    label: "Pending",
+  },
+  accepted: {
+    color: "#FFA600",
+    label: "Accepted",
+  },
+  cancelled: {
+    color: "#F41414",
+    label: "Cancelled", // Fixed label for cancelled state
+  },
+};
 
 export function SellerOrderDetailsScreen() {
   const triggerRef = useRef<HTMLDivElement>(null);
@@ -125,6 +143,22 @@ export function SellerOrderDetailsScreen() {
   }
 
   const { order, order_status } = data.data;
+  let currentStatus: string = "unverified";
+  const hasVerificationImages = sellerImageVerification?.urls?.urls?.length > 0;
+
+  if (!hasVerificationImages) {
+    currentStatus = "unverified";
+  } else if (order_status === "accepted") {
+    currentStatus = "accepted";
+  } else if (order_status === "cancelled") {
+    currentStatus = "cancelled";
+  } else {
+    currentStatus = "pending";
+  }
+
+  // Get configuration for current status
+  const { color, label } = statusConfig[currentStatus];
+
   console.log(sellerImageVerification);
   return (
     <div className="p-4 font-OpenSans">
@@ -180,7 +214,7 @@ export function SellerOrderDetailsScreen() {
           </div>
           <div className="flex justify-between text-xl">
             <span>Transaction Fee</span>
-            <span>{currencyFormmater(100)}</span>
+            <span>{currencyFormmater(1)}</span>
           </div>
           <div className="flex justify-between text-xl">
             <span>Shipping Fee</span>
@@ -200,8 +234,14 @@ export function SellerOrderDetailsScreen() {
             <h3 className="text-lg lg:text-2xl font-medium">
               Product visual verification
             </h3>
-            <span className="lg:hidden text-[#007AFF] bg-[#007AFF] bg-opacity-15 px-6 py-2 text-xl font-OpenSans">
-              Unverified
+            <span
+              className=" lg:hidden px-6 py-2 text-xl font-OpenSans"
+              style={{
+                color: color,
+                backgroundColor: `${color}26`, // 15% opacity in hex is approximately 26
+              }}
+            >
+              {label}
             </span>
             <ModalWrapperDialog
               trigger={
@@ -343,9 +383,14 @@ export function SellerOrderDetailsScreen() {
               </div>
             </ModalWrapperDialog>
           </div>
-
-          <span className="hidden lg:block text-[#007AFF] bg-[#007AFF] bg-opacity-15 px-6 py-2 text-xl font-OpenSans">
-            Unverified
+          <span
+            className="hidden lg:block px-6 py-2 text-xl font-OpenSans"
+            style={{
+              color: color,
+              backgroundColor: `${color}26`, // 15% opacity in hex is approximately 26
+            }}
+          >
+            {label}
           </span>
         </div>
 
@@ -373,7 +418,9 @@ export function SellerOrderDetailsScreen() {
                     key={slot}
                     onChange={handleImageCapture}
                   />
-                  <p className="mt-4 text-lg lg:text-xl text-left lg:text-center text-gray-500 ">{slot}</p>
+                  <p className="mt-4 text-lg lg:text-xl text-left lg:text-center text-gray-500 ">
+                    {slot}
+                  </p>
                 </div>
               ))}
             </div>

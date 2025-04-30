@@ -12,7 +12,7 @@ import { ITabs, OrderTabs } from "./order-tabs";
 import { Link, Outlet, useMatch, useParams } from "react-router-dom";
 import { dashboardConfig } from "../../../../lib/config";
 import Icon from "../../../../ui/Icon";
-import { useGetSellerOrdersQuery } from "../../queries/order/queries";
+import { useGetASellerOrderQuery, useGetSellerOrdersQuery } from "../../queries/order/queries";
 import { Pagination } from "../../../../common/components/pagination";
 import { useMemo, useState } from "react";
 import { SellerOrderQueryBuilder } from "../../lib/orders/order-query-builder";
@@ -52,6 +52,9 @@ export function SellerOrderScreen() {
   const { data, isFetching } = useGetSellerOrdersQuery(
     queryParams,
     isMathRoute
+  );
+  const { data:sellerOrder, isLoading: orderDetailsLoading } = useGetASellerOrderQuery(
+    orderId ?? ""
   );
   const table = useReactTable({
     initialState: {

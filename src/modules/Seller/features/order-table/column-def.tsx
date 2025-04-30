@@ -59,6 +59,10 @@ export const columns: ColumnDef<ISellerOrder>[] = [
     },
   },
   {
+    accessorKey: "quantity",
+    header: "Quantity",
+  },
+  {
     accessorKey: "invoiceId",
     header: "Invoice ID",
   },

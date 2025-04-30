@@ -26,6 +26,7 @@ export const transformSellerOrder = (
       orderNumber: order.orderNumber,
       status: order.order_status,
       orderDate: order.created_at,
+      quantity:order.quantity || 1
     };
   });
 
