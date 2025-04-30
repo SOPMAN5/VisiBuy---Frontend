@@ -158,22 +158,27 @@ export function SellerOrderDetailsScreen() {
 
   // Get configuration for current status
   const { color, label } = statusConfig[currentStatus];
-
-  console.log(sellerImageVerification);
+  const orderAmount = order.price || 0;
+  const commissionFee = 0.05; // 5%
+  const commisionAmout = order.price ? order.price * commissionFee : 0;
+  const sellerPayableAmount = orderAmount - commisionAmout;
+  console.log(sellerImageVerification, orderAmount, order);
   return (
     <div className="p-4 font-OpenSans">
       {/* Order status section */}
       <div className="relative border border-light-gray rounded-lg">
         <div className="flex justify-between border-b border-light-gray p-6">
-          <h3 className="text-2xl font-medium">Ordered Item : 1</h3>
+          <h3 className="text-2xl font-medium">
+            Ordered Item : {order?.quantity || 0}
+          </h3>
           <h3 className="text-2xl font-medium">Status</h3>
         </div>
 
         <div className="flex justify-between items-center p-6">
           <div className="flex gap-x-4">
             <img
-              src="/sneaker.png"
-              width={50}
+              src={order.img_url}
+              width={70}
               alt={order.productName}
               className="border border-light-gray"
             />
@@ -181,6 +186,12 @@ export function SellerOrderDetailsScreen() {
               <span className="text-2xl font-medium">{order.productName}</span>
               <span className="text-xl">
                 {formatDate(order.orderDate as string)}
+              </span>
+              <span className="text-xl">
+                Colors: {order.colors}
+              </span>
+              <span className="text-xl">
+                Sizes : {order.sizes}
               </span>
             </div>
           </div>
@@ -199,7 +210,9 @@ export function SellerOrderDetailsScreen() {
         <div className="flex justify-between items-center p-6">
           <div className="flex flex-col gap-y-4">
             <span className="text-2xl font-medium">Paid via Bank Transfer</span>
-            <span className="text-xl">{formatDate(new Date())}</span>
+            <span className="text-xl">
+              {formatDate(order.orderDate as string)}
+            </span>
           </div>
 
           <span className="text-[#28A78B] bg-opacity-15 bg-[#28A78B] px-6 py-2 text-xl font-OpenSans">
@@ -210,19 +223,21 @@ export function SellerOrderDetailsScreen() {
         <div className="border-t border-light-gray flex flex-col gap-y-4 p-6">
           <div className="flex justify-between text-xl">
             <span>Subtotal</span>
-            <span>{currencyFormmater(14000)}</span>
+            <span>{currencyFormmater(orderAmount)}</span>
           </div>
           <div className="flex justify-between text-xl">
-            <span>Transaction Fee</span>
-            <span>{currencyFormmater(1)}</span>
+            <span>Transaction Fee (5%)</span>
+            <span>{currencyFormmater(commisionAmout)}</span>
           </div>
           <div className="flex justify-between text-xl">
             <span>Shipping Fee</span>
             <span>{currencyFormmater(0)}</span>
           </div>
           <div className="flex justify-between text-xl">
-            <span className="font-bold">Total</span>
-            <span className="font-bold">{currencyFormmater(14100)}</span>
+            <span className="font-bold">You'll receive</span>
+            <span className="font-bold">
+              {currencyFormmater(sellerPayableAmount)}
+            </span>
           </div>
         </div>
       </div>
