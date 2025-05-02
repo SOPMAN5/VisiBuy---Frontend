@@ -30,6 +30,7 @@ export function SignUpForm() {
   const { toast } = useToast();
   const buyerMutation = useCreateBuyer();
   const sellerMutation = useCreateSeller();
+
   useEffect(() => {
     if (sellerMutation.isSuccess || buyerMutation.isSuccess) {
       toast({
@@ -43,6 +44,7 @@ export function SignUpForm() {
       });
     }
   }, [sellerMutation.isSuccess, buyerMutation.isSuccess]);
+
   const form = useForm<z.infer<typeof SignupUserSchema>>({
     mode: "onTouched",
     resolver: zodResolver(SignupUserSchema),
