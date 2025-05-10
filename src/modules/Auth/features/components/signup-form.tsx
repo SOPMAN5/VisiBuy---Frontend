@@ -81,6 +81,7 @@ export function SignUpForm() {
     const userActivityTracker = new UserActivityTracker([facebookTracker]); // array of trackers to send data
     try {
       if (role === "buyer") {
+        
         await buyerMutation.mutateAsync(values);
         userActivityTracker.trackActivity("track", "CompleteRegistration", {
           content_name: "Signup",
@@ -92,7 +93,7 @@ export function SignUpForm() {
         await sellerMutation.mutateAsync(values);
         userActivityTracker.trackActivity("track", "CompleteRegistration", {
           content_name: "Signup",
-          user_type: "seller ",
+          user_type: "seller",
           email: values.email,
           name: values.fullName,
         });
