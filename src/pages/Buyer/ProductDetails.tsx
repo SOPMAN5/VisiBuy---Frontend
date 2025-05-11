@@ -5,15 +5,22 @@ import {
 import { RootState } from "@/store/store";
 import OrderSuccess from "@/ui/buyer/OrderSuccess";
 import { useEffect, useState } from "react";
-import { FaShoppingCart, FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import {
+  FaShoppingCart,
+  FaChevronLeft,
+  FaChevronRight,
+  FaArrowLeft,
+} from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import ErrorHolder from "@/ui/buyer/ErrorHolder";
+import { UserActivityTracker } from "@/lib/activity-tracker/user-activity-tracker";
+import { facebookTracker } from "@/lib/activity-tracker/facebook-tracker";
 
 interface Product {
   _id: string;
@@ -30,6 +37,7 @@ interface Product {
 }
 
 function ProductDetails() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id } = useParams<{ id: string }>();
 
@@ -52,6 +60,17 @@ function ProductDetails() {
   const cartItem = cartItems.find((item) => item._id === id);
   const quantity = cartItem ? cartItem.quantity : localQuantity;
 
+  // facebook tracker
+  const userActivityTracker = new UserActivityTracker([facebookTracker]);
+  const trackAddToCartClick = (addToCartClicked) => {
+    console.log(addToCartClicked)
+      userActivityTracker.trackActivity("track", "AddToCart", {
+        product_name: addToCartClicked?.model,
+        product_id: addToCartClicked?._id,
+        product_price: addToCartClicked?.price,
+      });
+  }
+
   useEffect(() => {
     // Find the product by matching the id with the `id` in the products array
     const foundProduct = products.find((p) => p._id === id);
@@ -68,9 +87,10 @@ function ProductDetails() {
         _id: data._id!,
         size: selectedSize,
         color: selectedColor,
-        quantity,
+        quantity: quantity,
       })
     );
+    trackAddToCartClick(data)
     setShowOrderSuccess(true);
   };
   const handleAddToQuantity = () => {
@@ -95,9 +115,16 @@ function ProductDetails() {
       setLocalQuantity((prev) => prev + 1);
     }
   };
+  // console.log(data)
 
   return (
     <div className='h-[100%] w-[93%] p-8'>
+      <button
+        onClick={() => navigate(-1)}
+        className='flex items-center gap-2 text-blue-500 hover:text-blue-700 font-semibold mb-4'
+      >
+        <FaArrowLeft /> Back
+      </button>
       {showErrorHolder && (
         <ErrorHolder
           message='Size/Color can not be empty!'
