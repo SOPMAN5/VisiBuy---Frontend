@@ -62,7 +62,7 @@ function ProductDetails() {
 
   // facebook tracker
   const userActivityTracker = new UserActivityTracker([facebookTracker]);
-  const trackAddToCartClick = (addToCartClicked) => {
+  const trackAddToCartClick = (addToCartClicked: Product) => {
     console.log(addToCartClicked)
       userActivityTracker.trackActivity("track", "AddToCart", {
         product_name: addToCartClicked?.model,
