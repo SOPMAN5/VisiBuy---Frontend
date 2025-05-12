@@ -5,11 +5,6 @@ import {
 import { RootState } from "@/store/store";
 import OrderSuccess from "@/ui/buyer/OrderSuccess";
 import { useEffect, useState } from "react";
-<<<<<<< HEAD
-import { FaShoppingCart, FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-=======
 import {
   FaShoppingCart,
   FaChevronLeft,
@@ -18,19 +13,14 @@ import {
 } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
->>>>>>> staging
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import ErrorHolder from "@/ui/buyer/ErrorHolder";
-<<<<<<< HEAD
-=======
 import { UserActivityTracker } from "@/lib/activity-tracker/user-activity-tracker";
 import { facebookTracker } from "@/lib/activity-tracker/facebook-tracker";
->>>>>>> staging
-
 interface Product {
   _id: string;
   brand: string;
@@ -46,10 +36,7 @@ interface Product {
 }
 
 function ProductDetails() {
-<<<<<<< HEAD
-=======
-  const navigate = useNavigate();
->>>>>>> staging
+const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id } = useParams<{ id: string }>();
 
@@ -69,14 +56,12 @@ function ProductDetails() {
   const [selectedSize, setSelectedSize] = useState<string>("");
 
   // Get product quantity in cart
-  const cartItem = cartItems.find((item) => item._id === id);
+  const cartItem = cartItems.find((item: { _id: string | undefined; }) => item._id === id);
   const quantity = cartItem ? cartItem.quantity : localQuantity;
 
-<<<<<<< HEAD
-=======
-  // facebook tracker
-  const userActivityTracker = new UserActivityTracker([facebookTracker]);
-  const trackAddToCartClick = (addToCartClicked) => {
+// facebook tracker
+const userActivityTracker = new UserActivityTracker([facebookTracker]);
+const trackAddToCartClick = (addToCartClicked: Product) => {
     console.log(addToCartClicked)
       userActivityTracker.trackActivity("track", "AddToCart", {
         product_name: addToCartClicked?.model,
@@ -85,35 +70,30 @@ function ProductDetails() {
       });
   }
 
->>>>>>> staging
   useEffect(() => {
     // Find the product by matching the id with the `id` in the products array
-    const foundProduct = products.find((p) => p._id === id);
+    const foundProduct = products.find((p: { _id: string | undefined; }) => p._id === id);
     setData(foundProduct ?? null); // Set the product or null if not found
   }, [id, products]); // Re-run effect when id or products change
 
   const handleOrderSuccess = () => {
-    console.log(quantity);
-    if (!data) return;
-    if (!selectedColor || !selectedSize) return setShowErrorHolder(true);
-    dispatch(
-      addToCart({
-        ...data,
-        _id: data._id!,
-        size: selectedSize,
-        color: selectedColor,
-<<<<<<< HEAD
-        quantity,
-      })
-    );
-=======
-        quantity: quantity,
-      })
-    );
-    trackAddToCartClick(data)
->>>>>>> staging
-    setShowOrderSuccess(true);
-  };
+  console.log(quantity);
+  if (!data) return;
+  if (!selectedColor || !selectedSize) return setShowErrorHolder(true);
+
+  dispatch(
+    addToCart({
+      ...data,
+      _id: data._id!,
+      size: selectedSize,
+      color: selectedColor,
+      quantity: quantity,
+    })
+  );
+
+  trackAddToCartClick(data);
+  setShowOrderSuccess(true);
+};
   const handleAddToQuantity = () => {
     // check if data exist
     if (!data || !data._id) return;
@@ -136,12 +116,9 @@ function ProductDetails() {
       setLocalQuantity((prev) => prev + 1);
     }
   };
-<<<<<<< HEAD
-
-  return (
-    <div className='h-[100%] w-[93%] p-8'>
-=======
-  // console.log(data)
+// return (
+//   <div className='h-[100%] w-[93%] p-8'>
+//   // console.log(data)
 
   return (
     <div className='h-[100%] w-[93%] p-8'>
@@ -151,7 +128,6 @@ function ProductDetails() {
       >
         <FaArrowLeft /> Back
       </button>
->>>>>>> staging
       {showErrorHolder && (
         <ErrorHolder
           message='Size/Color can not be empty!'
