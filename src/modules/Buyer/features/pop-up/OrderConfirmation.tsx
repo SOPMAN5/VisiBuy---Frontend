@@ -33,14 +33,14 @@ interface OrderConfirmationProps {
     totalAmount: number;
     paymentStatus: string;
   };
-  userAddress: any;
+  userAddress: string;
 }
 
 const OrderConfirmation: React.FC<OrderConfirmationProps> = ({
   isOpen,
   onClose,
   orderDetails,
-  userAddress,
+  userAddress
 }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
@@ -70,26 +70,29 @@ const OrderConfirmation: React.FC<OrderConfirmationProps> = ({
   //   console.log(data);
   // };
   const userActivityTracker = new UserActivityTracker([facebookTracker]);
-  const trackPurchaseProducts = (productPurchase: {
-    items: any;
-    totalAmount: any;
-    paymentStatus?: string;
-  }) => {
-    // console.log(productPurchase);
-    userActivityTracker.trackActivity("Purchase", "ProductPurchased", {
-      product_id: productPurchase?.items._id,
-      product_name: productPurchase?.items.model,
-      product_quantity: productPurchase?.items.quantity,
-      value: productPurchase?.totalAmount,
-      currency: "Naira",
-    });
-  };
+  const trackPurchaseProducts = (productPurchase: { items: any; totalAmount: any; paymentStatus?: string; }) => {
+    // orderDetails, setOrderDetails] = useState({
+    //   // Generate unique order ID
+    //   // orderId: "VISI-" + Math.floor(100000 + Math.random() * 900000),
+    //   items: { _id: "", model: "", quantity: 1, price: 0 },
+    //   totalAmount: 0, // Default value
+    //   paymentStatus: "Pending",
+    // });
+    console.log(productPurchase)
+      userActivityTracker.trackActivity("track", "Purchase", {
+        product_id: productPurchase?.items._id,
+        product_name: productPurchase?.items.model,
+        product_quantity: productPurchase?.items.quantity,
+        value: productPurchase?.totalAmount,
+        currency: 'Naira'
+      });
+  }
 
   const sendData = async () => {
     const state = store.getState();
     const token = state.auth.token;
 
-    trackPurchaseProducts(orderDetails);
+    trackPurchaseProducts(orderDetails)
 
     const response = await fetch(`${process.env.REACT_APP_BASE_URL}order`, {
       method: "POST",
@@ -145,7 +148,7 @@ const OrderConfirmation: React.FC<OrderConfirmationProps> = ({
         <div className='flex gap-2'>
           <button
             onClick={() => {
-              navigate('/dashboard/buyer/carts');
+              navigate(-1);
               sendData();
               dispatch(removeFromCart(orderDetails.items._id));
             }}
