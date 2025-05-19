@@ -1,9 +1,11 @@
 import { ISellerProduct } from "../../models/product";
 
-export function transformSellerProduct(productdata: any): ISellerProduct[] | [] {
+export function transformSellerProduct(
+  productdata: any
+): ISellerProduct[] | [] {
   const products = productdata?.products;
- 
-  if(products.length === 0) return []
+
+  if (products.length === 0) return [];
   return products.map((product: any, index: any) => {
     return {
       id: product._id,
@@ -15,7 +17,7 @@ export function transformSellerProduct(productdata: any): ISellerProduct[] | [] 
       size: product.size,
       stock_status: product.stock_status,
       images: product.images,
-      seller_img:"/sneaker.png"
+      seller_img: product.images[0] ?? "/sneaker.png",
     };
   });
 }
