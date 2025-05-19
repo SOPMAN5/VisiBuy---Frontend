@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 const BuyerProductsPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { products, loading, loadingMore, hasMore } = useSelector(
-    (state: RootState) => state.buyer.product
+    (state: RootState) => state.buyer.product,
   );
   const filteredProducts = useSelector(selectFilteredProducts) || [];
   const filters = useSelector((state: any) => state.buyer.filters) || {};
@@ -18,14 +18,27 @@ const BuyerProductsPage = () => {
 
   const loader = useRef<HTMLDivElement | null>(null);
 
+  // Fetch products whenever the page number changes
+  // useEffect(() => {
+  //   // Start loading
+  //   setLoading(true);
+  //   dispatch(fetchProducts(page)).then((res) => {
+  //     if (res.payload.length === 0) {
+  //       setHasMore(false);
+  //     }
+  //   })
+  //     // Stop loading when the fetch completes
+  //     .finally(() => setLoading(false));
+  // }, [dispatch, page]);
+
   // Initial fetch
   useEffect(() => {
     if (products?.length === 0) {
-      dispatch(
-        fetchProducts({ page: currentPage, query: filters.search || "" })
-      ); // Fetch first page
+      dispatch(fetchProducts({ page: 1, query: filters.search || "" }));
     }
-  }, [dispatch, products?.length]);
+  }, [dispatch, products?.length, filters.search]);
+
+  console.log(products);
 
   // Intersection Observer to fetch more products
   useEffect(() => {
@@ -34,21 +47,27 @@ const BuyerProductsPage = () => {
         if (entries[0].isIntersecting && !loading && !loadingMore && hasMore) {
           const nextPage = currentPage + 1;
           dispatch(
-            fetchProducts({ page: currentPage, query: filters.search || "" })
+            fetchProducts({ page: nextPage, query: filters.search || "" }),
           );
           setCurrentPage(nextPage);
         }
       },
-      { threshold: 1.0 }
+      { threshold: 1.0 },
     );
+    console.log(products);
+    console.log(hasMore);
 
     const currentLoader = loader.current;
-    if (currentLoader) observer.observe(currentLoader);
+    if (currentLoader) {
+      observer.observe(currentLoader);
+    }
 
     return () => {
-      if (currentLoader) observer.unobserve(currentLoader);
+      if (currentLoader) {
+        observer.unobserve(currentLoader);
+      }
     };
-  }, [dispatch, loading, loadingMore, hasMore, currentPage]);
+  }, [dispatch, loading, loadingMore, hasMore, currentPage, filters.search]);
 
   const displayedProducts = filtersApplied ? filteredProducts : products;
 
@@ -58,6 +77,9 @@ const BuyerProductsPage = () => {
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-3xl font-bold font-montserrat">Products</h2>
       </div>
+
+      {/* Product Grid using Tailwind CSS Masonry */}
+      {/* {displayedProducts?.length > 0 ? ( */}
 
       {/* Products Grid */}
       {loading ? (
@@ -73,6 +95,27 @@ const BuyerProductsPage = () => {
           {displayedProducts.map((product) => (
             <ProductSkeleton type="prod" product={product} key={product._id} />
           ))}
+
+          {/* Loading More Skeletons */}
+          {/* {loadingMore &&
+            [...Array(3)].map((_, idx) => (
+              <ProductSkeleton key={`skeleton-${idx}`} type="skeleton" />
+            ))} */}
+          {/* {loading &&
+            [...Array(3)].map((_, i) => (
+              <ProductSkeleton
+                key={`loading-${i}`}
+                type='skeleton'
+                product={{
+                  _id: "",
+                  images: [],
+                  storeName: "",
+                  model: "",
+                  brand: "",
+                  price: 0,
+                }}
+              />
+            ))} */}
         </div>
       ) : (
         <p className="text-center text-gray-500">No products available.</p>
@@ -85,7 +128,7 @@ const BuyerProductsPage = () => {
         )}
         {!loadingMore && !hasMore && (
           <span className="text-gray-400 text-sm">
-            No more products to load.
+            End of this week Beta Drop
           </span>
         )}
       </div>

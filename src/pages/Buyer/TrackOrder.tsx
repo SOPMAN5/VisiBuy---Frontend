@@ -18,7 +18,7 @@ const BuyerTrackOrderPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const location = useLocation();
   const { allOrders, loading, error } = useSelector(
-    (state: RootState) => state.trackOrder
+    (state: RootState) => state.trackOrder,
   );
 
   const { statusFilter, searchQuery, handleStatusChange, handleSearch } =
@@ -27,7 +27,7 @@ const BuyerTrackOrderPage = () => {
   const filteredOrders = useOrderFilter(
     allOrders ?? [],
     statusFilter,
-    searchQuery
+    searchQuery,
   );
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -39,7 +39,7 @@ const BuyerTrackOrderPage = () => {
   const totalPages = Math.ceil(filteredOrders.length / ORDERS_PER_PAGE);
   const paginatedOrders = filteredOrders.slice(
     (currentPage - 1) * ORDERS_PER_PAGE,
-    currentPage * ORDERS_PER_PAGE
+    currentPage * ORDERS_PER_PAGE,
   );
 
   useEffect(() => {
